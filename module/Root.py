@@ -157,7 +157,7 @@ class Root():
     self.cursor.execute(temperquery, temperarr)
     self.cursor.execute(humidquery, humidarr)
 
-    self.cursor.execute("SELECT *FROM usertemper_setting order by ID DESC limit 1")
+    self.cursor.execute("SELECT *FROM setting order by ID DESC limit 1")
     result = self.cursor.fetchone()
     base_high = result[1]
     base_row = result[2]
@@ -173,9 +173,9 @@ class Root():
       else :
         tempTemper += "-1"
 
-      if tempHumid[i] > 75:
+      if humidarr[i] > 75:
         tempHumid += "0"
-      else:
+      elif humidarr[i]<=75:
         tempHumid += "1"
 
 

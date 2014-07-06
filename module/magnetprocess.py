@@ -22,12 +22,13 @@ def magnetSensing(que, total_num):
   while 1:
     line = pipein.readline()[:-1]
     if line != "":
+      pass
       # need to parse
       # setting prevention_Mode
     magnet_state = 1#GPIOmagnetRead()
     distance_flag = 0
     # read distance_flag
-    if distance_flag == 0 && magnet_state == 1:
+    if distance_flag == 0 and magnet_state == 1:
       human_num += 1
       if human_num == 1:
         tempolight = ""
@@ -65,7 +66,7 @@ def magnetSensing(que, total_num):
 
         message = "put/%s/%s/%s" %(templight, "?", "?")
         que.put(message)
-    elif distance_flag == 1 && magnet_state == 1:
+    elif distance_flag == 1 and magnet_state == 1:
       human_num = human_num -1
       templight = ""
       if human_num == 0:

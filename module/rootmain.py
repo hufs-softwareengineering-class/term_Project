@@ -2,6 +2,7 @@ from Root import *
 import sqlite3
 import os, time, sys
 from multiprocessing import Process, Queue
+from magnetprocess import *
 
 sqlite_file = 'our_db.sqlite'    # name of the sqlite database file
 lighttable = 'light'
@@ -89,18 +90,24 @@ if __name__ == "__main__":
   c.execute(lightquery, baselist)
   c.execute(temperquery, baselist)
   c.execute(humidquery, baselist)
+  totalnum = root.gettotalnum()
 
-  p = Process(target = magnetSensin, args(que,))
-  p.start()
+ # p = Process(target = magnetSensing, args=(que, totalnum))
+ # p.start()
   #need to add the pipe module
   while 1:
     line = pipein.readline()[:-1]
-    magmessage = ""
-    magmessage = que.get(timeout = 1)
-    if magmessage =="":
-      pass
-    else :
-      queue.append(magmessage)
+  #  magmessage = ""
+
+    #try:
+    #  magmessage = que.get(block = False ,timeout = 1)
+    #except:
+     # print "none data in ipc queue"
+
+    #if magmessage =="":
+    #  pass
+    #else :
+    #  queue.append(magmessage)
     if line!="": # need to modify
       #need to parsing the json and make meassage , then enqueue the message to the queue
       #need to parsing the mode 
