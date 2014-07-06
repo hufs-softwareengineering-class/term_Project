@@ -155,7 +155,7 @@ if __name__ == "__main__":
             if (i == int(command[0])):
               message+= command[1]
               continue
-            message+=str(dbtable[i-1])
+            message+=str(dbtable[i+1])
           message+="/?/?"
         elif schema == "temper":
           for i in range(root.gettotalnum()):
