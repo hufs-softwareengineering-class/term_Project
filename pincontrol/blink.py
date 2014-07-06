@@ -3,9 +3,15 @@ import time
 
 GPIO.setup("P8_12", GPIO.OUT)
 
-while True:
+def function(inputdata):
+  if inputdata == 1:
     GPIO.output("P8_12", GPIO.HIGH)
-    time.sleep(1)
+  else:
     GPIO.output("P8_12", GPIO.LOW)
-    time.sleep(1)
+
+
+
+
+
+
 
