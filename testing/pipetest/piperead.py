@@ -3,7 +3,7 @@ pipe_name = 'pipefile'
 if not os.path.exists(pipe_name):
   os.mkfifo(pipe_name)
 
-pipein = open(pipe_name, 'r')
+pipein = os.open(pipe_name, os.O_NONBLOCK | os.O_RDONLY)
 print "hello"
 while True:
   line = pipein.readline()[:-1]

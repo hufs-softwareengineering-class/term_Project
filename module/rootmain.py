@@ -25,11 +25,13 @@ def safe_read(fd, size=1024):
       raise
 
 if __name__ == "__main__":
-  if not os.path.exists(pipe_name):
-    os.mkfifo(pipe_name)
-  print "hello"
-  pipein = open(pipe_name, 'r')
-
+  #if not os.path.exists(pipe_name):
+   # os.mkfifo(pipe_name)
+  #print "hello"
+ # pipein = open(pipe_name, 'r')
+  webpipeque = Queue()
+  webpipe = Process(target = pipeprocess, args = (webpipeque, ))
+  webpipe.start()
   conn = sqlite3.connect(sqlite_file, check_same_thread=False)
   conn.isolation_level =None
   c = conn.cursor()
@@ -112,9 +114,8 @@ if __name__ == "__main__":
       print "before read========" 
       #line = pipein.readline()[:-1]
       #line = os.read(pipein, 1024)
-      if os.path.getsize("pipefile") !=0:
-        line = pipein.readline()[:-1]
-        print line + "get message from web process que"
+      line = webpipeque.get(block = False , timeout =1)
+      print line + "get message from web process que"
     except:
       print "none data in ipc pipe"
     magmessage = ""

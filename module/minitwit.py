@@ -235,13 +235,29 @@ def action(cmd, num, act):
 			command = 1
 		else:
 			command = 0
-	else:
-		print "Other Command"
-	message = "{'light' : '%d/%d'}\n"%(int(num), int(command))
+		message = "{'light' : '%d/%d'}\n"%(int(num), int(command))
         print message + "before wirte pipe=============="
-	os.write(pipout, message)
-	print message + "after wirte pipe============"
-	
+		os.write(pipout, message)
+		print message + "after wirte pipe============"
+	else if cmd == 'window':
+		if act == "on":
+			command = 1
+		else:
+			command = 0
+		message = "{'window' : '%d/%d'}\n"%(int(num), int(command))
+        print message + "before wirte pipe=============="
+		os.write(pipout, message)
+		print message + "after wirte pipe============"
+	else if cmd == 'temper':
+		if act == "up":
+			command = 1
+		else:
+			command = 0
+		message = "{'temper' : '%d/%d'}\n"%(int(num), int(command))
+        print message + "before wirte pipe=============="
+		os.write(pipout, message)
+		print message + "after wirte pipe============"
+
 	light = []
 	temper = []
 	humid = []
@@ -275,105 +291,6 @@ def action(cmd, num, act):
 	return render_template('Manual.html', error=error, light=light, \
 			temper=temper, humid=humid, totalnum=totalnum)
 
-#WINDOWS
-@app.route('/<window>/<num>/<winact>')
-def winaction(window, num, winact):
-	print "========	This is Window Command ======="
-	command = 0
-	if winact == "on":
-		command = 1
-	else:
-		command = 0
-	
-	message = "{'window' : '%d/%d'}\n"%(int(num), int(command))
-        print message + "before wirte pipe=============="
-	os.write(pipout, message)
-	print message + "after wirte pipe============"
-	
-	light = []
-	temper = []
-	humid = []
-	totalnum = 2
-#	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
-#	totalnum = int(cursor.fetchone()[1])
-        print "before"
-	cursur.execute("SELECT * FROM light order by ID DESC limit 1")
-	print "after"
-        for i in range(totalnum):
-		light.append(0)
-		temper.append(0)
-		humid.append(0)
-	lighttable = cursur.fetchone()
-	for i in range(totalnum):
-		
-		light[i] = lighttable[i+1]
-	
-	cursur.execute("SELECT * FROM temper order by ID DESC limit 1")
-        tempertable = cursur.fetchone()
-	for i in range(totalnum):
-		temper[i] = tempertable[i+1]
-
-
-	cursur.execute("SELECT * FROM humid order by ID DESC limit 1")
-	humidtable = cursur.fetchone()
-	for i in range(totalnum):
-		humid[i] = humidtable[i+1]
-	
-	error = None
-	return render_template('Manual.html', error=error, light=light, \
-			temper=temper, humid=humid, totalnum=totalnum)
-
-#TEMPER
-@app.route('/<temper>/<num>/<tempact>')
-def tempaction(temper, num, tempact):
-	print "========	This is Temper Command ======="
-	command = 0
-	if tempact == "up":
-		command = 1
-	else:
-		command = 0
-	
-	message = "{'temper' : '%d/%d'}\n"%(int(num), int(command))
-        print message + "before wirte pipe=============="
-	os.write(pipout, message)
-	print message + "after wirte pipe============"
-	
-	light = []
-	temper = []
-	humid = []
-	totalnum = 2
-#	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
-#	totalnum = int(cursor.fetchone()[1])
-        print "before"
-	cursur.execute("SELECT * FROM light order by ID DESC limit 1")
-	print "after"
-        for i in range(totalnum):
-		light.append(0)
-		temper.append(0)
-		humid.append(0)
-	lighttable = cursur.fetchone()
-	for i in range(totalnum):
-		
-		light[i] = lighttable[i+1]
-	
-	cursur.execute("SELECT * FROM temper order by ID DESC limit 1")
-        tempertable = cursur.fetchone()
-	for i in range(totalnum):
-		temper[i] = tempertable[i+1]
-
-
-	cursur.execute("SELECT * FROM humid order by ID DESC limit 1")
-	humidtable = cursur.fetchone()
-	for i in range(totalnum):
-		humid[i] = humidtable[i+1]
-	
-	error = None
-	return render_template('Manual.html', error=error, light=light, \
-			temper=temper, humid=humid, totalnum=totalnum)
-
-
-#로그인 -> 디비에서 값 가져오는거 분석해서 센서 값들 가져오기
-@app.route('/login', methods=['GET', 'POST'])
 def login():
     """Logs the user in."""
     if g.user:
@@ -448,8 +365,8 @@ def Usertemp():
 		return render_template('tempset.html', high=high, low=low)
     	cursur.execute("SELECT * FROM setting order by ID DESC limit 1")
     	data= cursur.fetchone()
-	high = int(data[1])
-	low = int(data[2])
+	high = int(data[2])
+	low = int(data[1])
 	return render_template('tempset.html', high=high, low=low)
 
 
