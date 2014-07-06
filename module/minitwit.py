@@ -157,9 +157,9 @@ def Automatic():
 	light = []
 	temper = []
 	humid = []
-	totalnum = 2
-#	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
-#	totalnum = int(cursor.fetchone()[1])
+#	totalnum = 2
+	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
+	totalnum = int(cursor.fetchone()[1])
         print "before"
 	cursur.execute("SELECT * FROM light order by ID DESC limit 1")
 	print "after"
@@ -193,9 +193,9 @@ def Manual():
 	temper = []
 	humid = []
 	global inve
-	totalnum = 2
-#	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
-#	totalnum = int(cursor.fetchone()[1])
+#	totalnum = 2
+	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
+	totalnum = int(cursor.fetchone()[1])
 	print "before"
 	cursur.execute("SELECT * FROM light order by ID DESC limit 1")
 	print "after"
@@ -271,9 +271,9 @@ def action(cmd, num, act):
 	temper = []
 	humid = []
 	t_inve = inve
-	totalnum = 2
-#	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
-#	totalnum = int(cursor.fetchone()[1])
+#	totalnum = 2
+	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
+	totalnum = int(cursor.fetchone()[1])
         print "before"
 	cursur.execute("SELECT * FROM light order by ID DESC limit 1")
 	print "after"
@@ -329,9 +329,9 @@ def test():
 	light = []
 	temper = []
 	humid = []
-	totalnum = 2
-#	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
-#	totalnum = int(cursor.fetchone()[1])
+#	totalnum = 2
+	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
+	totalnum = int(cursor.fetchone()[1])
         print "before"
 	cursur.execute("SELECT * FROM light order by ID DESC limit 1")
 	print "after"
