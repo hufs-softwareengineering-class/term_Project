@@ -5,9 +5,9 @@ from servermodule import *
 import sys
 import time
 import threading
-import GPIOlightread
-import GPIOtemperread
-import GPIOhumidread
+from GPIOlightread import *
+from GPIOtemperread import *
+from GPIOhumidread import *
 
 class myThread(threading.Thread):
   def __init__(self, node, sensingType):
@@ -15,9 +15,9 @@ class myThread(threading.Thread):
     self.node = node
     self.sensingType = sensingType
     self.dictionary = {
-        "light" : lightSensing,
-        "temper" : temperSensing,
-        "humid" : humidSensing, 
+        "light" : self.node.lightSensing,
+        "temper" : self.node.temperSensing,
+        "humid" : self.node.humidSensing, 
         }
 
   def run(self):
@@ -44,7 +44,7 @@ class Node():
     self.addr = getaddr_rssi()
 
   def search(self, dataparse, address):
-    if len(parent) is not 0:
+    if len(self.parent) is not 0:
       response = "searchres/%s" %(dataparse[1])
       clientmodule(response, address)
     else:
@@ -53,7 +53,7 @@ class Node():
       self.number = self.count
       self.dic_addr[self.parent[0]] = address
 
-      if len(addr) != 0:
+      if len(self.addr) != 0:
         message = "search/%d/%d" %(self.count, self.number)
         clientmodule(message, self.addr[self.search_index].getaddr())
         self.search_index = self.search_index + 1
@@ -139,21 +139,27 @@ class Node():
     # if state == -1, then current state maintain
     if dataparse[1] != "?":
       if dataparse[1][self.number] is "1":
+        data = 0
         #turn on the light
       elif dataparse[1][self.number] is "0":
+        data = 0
         #turn off the light
     # temperature state = {-1(unchange), 0(up temperature), 1(down temperature)}
     if dataparse[2] != "?":
       if dataparse[2][self.number] is "0":
+        data = 0
         #turn on the temperature light blue
 
       elif dataparse[2][self.number] is "1":
+        data = 0
         #turn on the temperature light red
 
     if dataparse[3] != "?":
       if dataparse[3][self.number] is "1":
+        data = 0
         #open the window
       elif dataparse[3][self.number] is "0":
+        data = 0
         #close the window
 
     

@@ -17,23 +17,28 @@ if __name__ == "__main__":
   if not os.path.exists(pipe_name):
     os.mkfifo(pipe_name)
 
-  pipein = os.open(pipe_name, 'r')
+  print "hello"
+  pipein = open(pipe_name, 'r')
+  print "hello"
   conn = sqlite3.connect(sqlite_file)
   c = conn.cursor()
 
+  print "hello"
 
   # Make Queeue
   queue = []
   root = Root(c)
-  lightSensingThread = myThread(root, "light", queue)
-  temperSensingThread = myThread(root, "temper", queue)
-  humidSensingThread = myThread(root, "humid", queue)
-  magnetSensingThread = myThread(root, "magnet", queue)
-  infraredSensingThread = myThread(root, "infrared", queue)
-  lightSensingThread.start()
-  temperSensingThread.start()
-  humidSensingThread.start()
-  magnetSensingThread.start()
+  #lightSensingThread = myThread(root, "light", queue)
+  #temperSensingThread = myThread(root, "temper", queue)
+  #humidSensingThread = myThread(root, "humid", queue)
+  #magnetSensingThread = myThread(root, "magnet", queue)
+  #infraredSensingThread = myThread(root, "infrared", queue)
+  print "hello"
+  #lightSensingThread.start()
+  #temperSensingThread.start()
+  #humidSensingThread.start()
+  #magnetSensingThread.start()
+  print "hello"
   root.makeDAG()
   
   c.execute('CREATE TABLE {tn} ({nf} {ft})'\
@@ -48,56 +53,60 @@ if __name__ == "__main__":
   #intialize the temeperr setting
   c.execute('CREATE TABLE {tn} ({nf} {ft})'\
       .format(tn = usertemper_setting, nf = "ID", ft="INTEGER"))
-  c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+  c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
       .format(tn = usertemper_setting, nf = "HIGH", ft = "INTEGER"))
-  c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+  c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
       .format(tn = usertemper_setting, nf = "LOW", ft = "INTEGER"))
-  c.execute("insert into usertemper_setting values (?,?,?)", [1, 18, 28])
+  c.execute("insert into setting values (?,?,?)", [1, 18, 28])
 
   c.execute('CREATE TABLE {tn} ({nf} {ft})'\
       .format(tn = current_person, nf = "ID", ft="INTEGER"))
 
-  c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+  c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
       .format(tn = current_person, nf = "sum", ft="INTEGER"))
-  c.execute('insert into current_person values (?,?)', [1, 0])
+  c.execute('insert into cur_person values (?,?)', [1, 0])
 
   for i in range(0, root.gettotalnum()):
     roomnum = "room" + str(i+1)
-    c.execute('ATRER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+    c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
         .format(tn = lighttable, nf = roomnum, ft="INTEGER"))
   
-    c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+    c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
         .format(tn = tempertable, nf = roomnum, ft="INTEGER"))
   
-
-  for i in range(0, root.gettotalnum()):
-    roomnum = "room" + str(i+1)
-    c.execute('ATRER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
-        .format(tn = lighttable, nf = roomnum, ft="INTEGER"))
-  
-    c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
-        .format(tn = tempertable, nf = roomnum, ft="INTEGER"))
-  
-    c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+    c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
         .format(tn = humidtable, nf = roomnum, ft="INTEGER"))
-  
+  num = "" 
+  baselist = []
+  for i in range(0, root.gettotalnum()):
+    num+="?,"
+    baselist.append(0)
+  baselist.append(0)
+  num+="?)"
+  lightquery = "insert into light values("+num
+  temperquery = "insert into temper values("+num
+  humidquery = "insert into humid values("+num
+  c.execute(lightquery, baselist)
+  c.execute(temperquery, baselist)
+  c.execute(humidquery, baselist)
 
   
   #need to add the pipe module
   while 1:
-    if ~pipein.empty(): # need to modify
-      line = pipein.readline()[:-1]
+    line = pipein.readline()[:-1]
+    if line != "": # need to modify
       #need to parsing the json and make meassage , then enqueue the message to the queue
       #need to parsing the mode 
+      print "hello"
       if schema == "prevenmode":
-        prevalue = #parsing the json 
+        prevalue = 0#parsing the json 
         root.setPrevention(prevalue)
         continue
-      message = #parisng the jsonand make the message (need to access the DB data) 
+      message = 0#parisng the jsonand make the message (need to access the DB data) 
       queue.append(message)
 
-    else if queue.len() == 0: #need to modify
-      root.getData()
+    elif len(queue) == 0: #need to modify
+      root.getData(queue)
     else :
       text = queue.pop()
       root.putData(text)
