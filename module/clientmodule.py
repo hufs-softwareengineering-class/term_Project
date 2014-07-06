@@ -6,7 +6,6 @@ import sys
 import bluetooth
 import time
 def clientmodule(message, addr):
-  time.sleep(3)
   if sys.version < '3':
     input = raw_input
 
@@ -16,10 +15,16 @@ def clientmodule(message, addr):
   port = 0x1001
 
   print("trying to connect to %s on PSM 0x%X" % (bt_addr, port))
+  while True:
+    try:
+      sock.connect((bt_addr, port))
+      print("connected.  type stuff")
+      break
+    except:
+      print ("try reconnect bluetooth after 1 sec")
+      time.sleep(1)
+      continue
 
-  sock.connect((bt_addr, port))
-
-  print("connected.  type stuff")
   sock.send(message)
   print("send message : %s "%message)
   sock.close()
