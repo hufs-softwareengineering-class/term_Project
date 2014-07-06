@@ -7,26 +7,28 @@ import time
 import datetime
 import Queue
 import threading
-import GPIOlightread
-import GPIOtemperread
-import GPIOhumidread
-import GPIOmagnetread
+#import GPIOlightread
+#import GPIOtemperread
+#import GPIOhumidread
+#import GPIOmagnetread
 
 class myThread(threading.Thread):
   def __init__(self, node, sensingType, que):
-    super.__init__(self)
+    #super.__init__(self)
+    threading.Thread.__init__(self)
+    self.que = que
     self.node = node
     self.sensingType = sensingType
     self.dictionary = {
-        "light" : lightSensing,
-        "temper" : temperSensing,
-        "humid" : humidSensing,
-        "magnet" : magnetSensing,
-        "infrared" : infraredSensing,
+        "light" : node.lightSensing,
+        "temper" : node.temperSensing,
+        "humid" : node.humidSensing,
+        "magnet" : node.magnetSensing,
+        "infrared" : node.infraredSensing,
         }
 
   def run(self):
-    self.dictionary[self.sensingType](que)
+    self.dictionary[self.sensingType](self.que)
 
 class Root():
   addr = []
@@ -60,12 +62,12 @@ class Root():
   def clearAutoMode(self):
     self.autoMode = 0
 
-  def getAutoMode():
+  def getAutoMode(self):
     return self.autoMode
 
   #make DAG 
-  def makeDAG():
-    message = "search/%d/%d" %(0, number)
+  def makeDAG(self):
+    message = "search/%d/%d" %(0, self.number)
     clientmodule(message, self.addr[self.search_index].getaddr())
     self.search_index = self.search_index + 1
     while 1:
