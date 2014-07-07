@@ -9,6 +9,7 @@ def clientmodule(message, addr):
   if sys.version < '3':
     input = raw_input
 
+  time.sleep(3)
   while True:
     try:
       sock=bluetooth.BluetoothSocket(bluetooth.L2CAP)
