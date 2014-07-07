@@ -1,5 +1,10 @@
-import Adafruit_BBIO.ADC as ADC
+import Adafruit_DHT
+import time
 
 def GPIOtemperRead():
-  ADC.setup()
-  return ( ADC.read("p8_14") - 500 )/10 #fill the blank port num and pinnum
+  sensor =  Adafruit_DHT.DHT11
+  pin = "P9_11"
+
+  humid, temp = Adafruit_DHT.read_retry(sensor, pin)
+
+  return temp

@@ -86,6 +86,9 @@ class Node():
   def get(self, dataparse, address):
     self.get_target = int(dataparse[1])
     if int(dataparse[1]) is self.number:
+      self.light_state = GPIOlightRead()
+      self.temperature_state = GPIOtemperRead()
+      self.humid_state = GPIOhumidRead()
       message = "%s/%s/%d/%d/%d" %("getres","success",self.light_state,self.temperature_state, self.humid_state)
 
       clientmodule(message,self.dic_addr[self.parent[0]])
