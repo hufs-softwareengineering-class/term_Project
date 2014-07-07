@@ -339,8 +339,16 @@ def test():
 @app.route('/Usertemp', methods=['GET', 'POST'])
 def Usertemp():
 	if request.method == 'POST':
-		print request.form['usertemp'] + "============> USER TEMP 1"
-		print request.form['usertemp2'] + "============> USER TEMP 2"
+		high = int(request.form['usertemp'] )
+		print high + "============> USER TEMP 1"
+		low =  int(request.form['usertemp2'])
+		print low + "============> USER TEMP 2"
+    cursur.execute("SELECT ID FROM setting order by ID DESC limit 1")
+    ID = int(cursur.fetchone())
+    data = [ID+1, low, high]
+    cursur.execute("insert into setting values (?,?,?)", data)
+    cursur.execute("SELECT ID FROM setting order by ID DESC limit 1")
+    print (cursur.fetchone())
 		return render_template('tempset.html')
 	return render_template('tempset.html')
 
