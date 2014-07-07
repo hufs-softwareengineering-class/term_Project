@@ -53,7 +53,7 @@ class Node():
       self.number = self.count
       self.dic_addr[self.parent[0]] = address
 
-      if len(addr) != 0:
+      if len(self.addr) != 0:
         message = "search/%d/%d" %(self.count, self.number)
         clientmodule(message, self.addr[self.search_index].getaddr())
         self.search_index = self.search_index + 1

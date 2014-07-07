@@ -28,16 +28,16 @@ if __name__ == "__main__":
   # Make Queeue
   queue = []
   root = Root(c)
-  lightSensingThread = myThread(root, "light", queue)
-  temperSensingThread = myThread(root, "temper", queue)
-  humidSensingThread = myThread(root, "humid", queue)
-  magnetSensingThread = myThread(root, "magnet", queue)
-  infraredSensingThread = myThread(root, "infrared", queue)
+  #lightSensingThread = myThread(root, "light", queue)
+  #temperSensingThread = myThread(root, "temper", queue)
+  #humidSensingThread = myThread(root, "humid", queue)
+  #magnetSensingThread = myThread(root, "magnet", queue)
+  #infraredSensingThread = myThread(root, "infrared", queue)
   print "hello"
-  lightSensingThread.start()
-  temperSensingThread.start()
-  humidSensingThread.start()
-  magnetSensingThread.start()
+  #lightSensingThread.start()
+  #temperSensingThread.start()
+  #humidSensingThread.start()
+  #magnetSensingThread.start()
   print "hello"
   root.makeDAG()
   

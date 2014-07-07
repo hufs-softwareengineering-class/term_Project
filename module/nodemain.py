@@ -9,19 +9,19 @@ from clientmodule import *
 node = Node()
 schemas = {
     "search" : node.search,
-    "searcheres" : node.searchres,
+    "searchres" : node.searchres,
     "get" : node.get,
     "getres" : node.getres,
     "put" : node.put
     }
 
 if __name__ == "__main__":
-  lightSensingThread = myThread(node, "light")
-  temperSensingThread = myThread(node, "temper")
-  humidSensingThread = myThread(node, "humid")
-  lightSensingThread.start()
-  temperSensingThread.start()
-  humidSensingThread.start()
+  #lightSensingThread = myThread(node, "light")
+  #temperSensingThread = myThread(node, "temper")
+  #humidSensingThread = myThread(node, "humid")
+  #lightSensingThread.start()
+  #temperSensingThread.start()
+  #humidSensingThread.start()
 
   while 1:
     data = servermodule()
