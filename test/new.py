@@ -2,6 +2,7 @@ from test_inquiry import *
 import bluetooth
 from clientmodule import *
 from servermodule import *
+from blink import *
 import sys
 import time
 
@@ -74,6 +75,7 @@ def root(res):
           break
         if num_index == number:
           # determine light state
+          dic_sensor["light"][number] = 1
           num_index = num_index + 1
           continue
       
@@ -102,6 +104,7 @@ def root(res):
       light_state = 1
     else:
       light_state = 0
+    function(light_state)
   
     message = "put/" + message
     
@@ -240,6 +243,9 @@ def put(dataparse, address):
   if dataparse[1][number] is "1":
     #need to add sensortype case
     light_state = 1
+  else:
+    light_state =0
+  function(light_state)
   
   message = "%s/%s" %(dataparse[0], dataparse[1])
   for i in child:
