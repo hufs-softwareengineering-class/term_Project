@@ -14,19 +14,21 @@ from werkzeug.security import check_password_hash, generate_password_hash
 #pipe
 pipe_name = 'pipefile'
 pipe_name2 = 'pipefile2'
-con = sqlite3.connect("out_db.sqlite")
-cursur = con.cursor()
 if not os.path.exists(pipe_name):
 	os.mkfifo(pipe_name)
 
 if not os.path.exists(pipe_name2):
 	os.mkfifo(pipe_name2)
 
+
 pipout=os.open(pipe_name, os.O_WRONLY)
 pipout2=os.open(pipe_name2, os.O_WRONLY)
 
-cursur.execute("selct ID from light order by ID DESC limit 1")
+con = sqlite3.connect("our_db.sqlite", check_same_thread=False)
+cursur = con.cursor()
+cursur.execute("select ID from light order by ID DESC limit 1")
 print cursur.fetchone()
+print "hello mungchung"
 
 #DB 설정 부분...추후 수정요
 # configuration
@@ -66,7 +68,6 @@ def connect_db():
 
 def init_db():
     """Creates the database tables."""
-    print g.cousor
     with closing(connect_db()) as db:
         with app.open_resource('schema.sql', mode='r') as f:
             db.cursor().executescript(f.read())
@@ -122,6 +123,10 @@ def teardown_request(exception):
 
 @app.route('/')
 def home():
+       
+	cursur.execute("select ID from light order by ID DESC limit 1")
+	print cursur.fetchone()
+	print "hello mungchung"
 	error = None
 	return render_template('home.html', error = error)
 

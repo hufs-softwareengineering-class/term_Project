@@ -1,6 +1,6 @@
 import sqlite3
 import os, time, sys
-def magnetSensing(que, total_num, cursor):
+def magnetSensing(que, total_num, conn):
   tempolight = ""
   magnet_state = 0
   distance_flag = 0
@@ -9,7 +9,8 @@ def magnetSensing(que, total_num, cursor):
   prique = []
   sqllite_file = "our_db.splite"
   pipe_name = "pipefile2"
-  line = "" 
+  line = ""
+  cursor = conn.cursor()
  
   if not os.path.exists(pipe_name):
     os.mkfifo(pipe_name)
@@ -92,6 +93,7 @@ def magnetSensing(que, total_num, cursor):
           tempolight +='0'
         message = "put/%s/%s/%s" %(tempolight, "?", "?")
         que.put(message)
+    conn.commit()
 
 
 

@@ -3,7 +3,6 @@ import sqlite3
 import os, time, sys
 from multiprocessing import Process, Queue
 from magnetprocess import *
-from minitwit import *
 
 sqlite_file = 'our_db.sqlite'    # name of the sqlite database file
 lighttable = 'light'
@@ -17,13 +16,13 @@ timeList = []
 line = ""
 
 if __name__ == "__main__":
-  conn = sqlite3.connect(sqlite_file)
-  c = conn.cursor()
-
   if not os.path.exists(pipe_name):
     os.mkfifo(pipe_name)
-
+  print "hello"
   pipein = open(pipe_name, 'r')
+
+  conn = sqlite3.connect(sqlite_file, check_same_thread=False)
+  c = conn.cursor()
 
   # Make Queeue
   que = Queue()
@@ -91,10 +90,12 @@ if __name__ == "__main__":
   c.execute(lightquery, baselist)
   c.execute(temperquery, baselist)
   c.execute(humidquery, baselist)
+  conn.commit()
   totalnum = root.gettotalnum()
 
-  p = Process(target = magnetSensing, args=(que, totalnum, c))
+  p = Process(target = magnetSensing, args=(que, totalnum, conn))
   p.start()
+
   #need to add the pipe module
   while 1:
     try:
@@ -125,6 +126,7 @@ if __name__ == "__main__":
 
     elif len(queue) == 0: #need to modify
       root.getData(queue)
+      conn.commit()
     else :
       
       text = queue.pop()
