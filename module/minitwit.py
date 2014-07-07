@@ -220,7 +220,7 @@ def Manual():
 	
 	error = None
 	return render_template('Manual.html', error=error, light=light, \
-			temper=temper, humid=humid, totalnum=totalnum, inve=inve)
+			temper=temper, humid=humid, totalnum=totalnum, t_inve=inve)
 
 
 #LED ON/OFF 버튼 누를때 실행되는 부분
@@ -258,7 +258,7 @@ def action(cmd, num, act):
         	print message + "before wirte pipe=============="
 		os.write(pipout, message)
 		print message + "after wirte pipe============"
-	elif cmd == 'inve':
+	elif cmd == 't_inve':
 		if act == "on":
 			inve = 1
 		else:
