@@ -3,7 +3,7 @@ import os, time, sys
 from GPIOmagnetread import *
 from GPIOdistance import *
 from multiprocessing import Process, Queue
-from pipeprocess import *
+from pipeprocess2 import *
 def magnetSensing(que, total_num, conn):
   tempolight = ""
   magnet_state = 0
@@ -16,7 +16,7 @@ def magnetSensing(que, total_num, conn):
   line = ""
   cursor = conn.cursor()
   webpipeque = Queue()
-  webpipe = Process(target = pipeprocess, args = (webpipeque, pipe_name))
+  webpipe = Process(target = pipeprocess2, args = (webpipeque, pipe_name))
   webpipe.start()
   
  

@@ -119,13 +119,15 @@ if __name__ == "__main__":
       print line + "get message from web process que"
     except:
       print "none data in ipc pipe"
-    magmessage = ""
-
+      line = ""
+      time.sleep(2)
+    magmessage= ""
     try:
       magmessage = que.get(block = False ,timeout = 1)
       print "get message from magprocess que"
     except:
       print "none data in ipc queue"
+      magmessage = ""
 
     if magmessage =="":
       pass
@@ -134,7 +136,8 @@ if __name__ == "__main__":
     if line!="": # need to modify
       #need to parsing the json and make meassage , then enqueue the message to the queue
       #need to parsing the mode 
-      schema , command = line.split("'")[1], line.split("'")[3].split("/")
+      schema = line.split("'")[1]
+      command = line.split("'")[3].split("/")
       message= ""
       if schema == "window":
         message = "?/?/"
@@ -163,6 +166,7 @@ if __name__ == "__main__":
           message = "?/" + message + "/?"
       message = "put/"+message
       #parisng the jsonand make the message (need to access the DB data) 
+      print message + "===============message==========="
       queue.append(message)
 
     elif len(queue) == 0: #need to modify
