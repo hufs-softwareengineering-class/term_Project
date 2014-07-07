@@ -81,10 +81,11 @@ if __name__ == "__main__":
   
   #need to add the pipe module
   while 1:
-    if ~pipein.empty(): # need to modify
-      line = pipein.readline()[:-1]
+    line = pipein.readline()[:-1]
+    if line != "": # need to modify
       #need to parsing the json and make meassage , then enqueue the message to the queue
       #need to parsing the mode 
+      print "hello"
       if schema == "prevenmode":
         prevalue = 0#parsing the json 
         root.setPrevention(prevalue)
