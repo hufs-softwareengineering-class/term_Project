@@ -165,7 +165,7 @@ class Node():
     
     message = "%s/%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2], dataparse[3])
     
-    for i in child:
+    for i in self.child:
       clientmodule(message, dic_addr[i])
     #append
 
