@@ -57,14 +57,14 @@ if __name__ == "__main__":
       .format(tn = usertemper_setting, nf = "HIGH", ft = "INTEGER"))
   c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
       .format(tn = usertemper_setting, nf = "LOW", ft = "INTEGER"))
-  c.execute("insert into usertemper_setting values (?,?,?)", [1, 18, 28])
+  c.execute("insert into setting values (?,?,?)", [1, 18, 28])
 
   c.execute('CREATE TABLE {tn} ({nf} {ft})'\
       .format(tn = current_person, nf = "ID", ft="INTEGER"))
 
   c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
       .format(tn = current_person, nf = "sum", ft="INTEGER"))
-  c.execute('insert into current_person values (?,?)', [1, 0])
+  c.execute('insert into cur_person values (?,?)', [1, 0])
 
   for i in range(0, root.gettotalnum()):
     roomnum = "room" + str(i+1)

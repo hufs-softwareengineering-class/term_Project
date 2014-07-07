@@ -137,9 +137,9 @@ class Root():
     temperarr.insert(0, result+1)
     humidarr.insert(0, result+1)
 
-    lightquery = 'insert into lighttable values ('
-    temperquery = 'insert into tempertable values ('
-    humidquery = 'insert into humidtable values ('
+    lightquery = 'insert into light values ('
+    temperquery = 'insert into temper values ('
+    humidquery = 'insert into humid values ('
     endquery = ''
     for i in range(0, self.total_num ):
       endquery += '?,'
