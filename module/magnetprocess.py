@@ -1,4 +1,5 @@
 import sqlite3
+import os, time, sys
 def magnetSensing(que, total_num):
   tempolight = ""
   magnet_state = 0
@@ -7,10 +8,24 @@ def magnetSensing(que, total_num):
   prevention_Mode = 0
   prique = []
   sqllite_file = "our_db.splite"
+  pipe_name = "pipefile2"
   con = sqlite3.connect(sqllite_file)
   cursor = con.cursor()
+  
+  if not os.path.exists(pipe_name):
+    os.mkfifo(pipe_name)
+
+  pipein = open(pipe_name, 'r')
+  
+  prevention_Mode = 1
+  
   while 1:
-    magnet_state = GPIOmagnetRead()
+    line = pipein.readline()[:-1]
+    if line != "":
+      # need to parse
+      # setting prevention_Mode
+    magnet_state = 1#GPIOmagnetRead()
+    distance_flag = 0
     # read distance_flag
     if distance_flag == 0 && magnet_state == 1:
       human_num += 1
