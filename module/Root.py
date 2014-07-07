@@ -114,9 +114,9 @@ class Root():
       if num_index == self.total_num:
         break
       if num_index == self.number:
-        self.light_state = 1#GPIOlightRead()
-        self.temperature_state = 1#GPIOtemperRead()
-        self.humid_state = 1#GPIOhumidRead()
+        self.light_state = GPIOlightRead()
+        self.temperature_state = GPIOtemperRead()
+        self.humid_state = GPIOhumidRead()
         lightarr[0] = self.light_state
         temperarr[0] = self.temperature_state
         humidarr[0] = self.humid_state
