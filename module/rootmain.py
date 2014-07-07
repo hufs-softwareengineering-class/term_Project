@@ -28,10 +28,6 @@ if __name__ == "__main__":
   # Make Queeue
   queue = []
   root = Root(c)
-<<<<<<< HEAD
-=======
-  print "hello"
->>>>>>> 1544e3edbb8b12fe0417b0e9c56ffb893b8531ad
   lightSensingThread = myThread(root, "light", queue)
   temperSensingThread = myThread(root, "temper", queue)
   humidSensingThread = myThread(root, "humid", queue)

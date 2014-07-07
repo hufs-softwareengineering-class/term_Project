@@ -14,13 +14,7 @@ import threading
 
 class myThread(threading.Thread):
   def __init__(self, node, sensingType, que):
-<<<<<<< HEAD
     threading.Thread.__init__(self)
-=======
-    #super.__init__(self)
-    threading.Thread.__init__(self)
-    self.que = que
->>>>>>> 1544e3edbb8b12fe0417b0e9c56ffb893b8531ad
     self.node = node
     self.sensingType = sensingType
     self.que = que
