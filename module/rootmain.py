@@ -93,16 +93,18 @@ if __name__ == "__main__":
   c.execute(humidquery, baselist)
   conn.commit()
   totalnum = root.gettotalnum()
-
+  print "===========> " ,totalnum
   p = Process(target = magnetSensing, args=(que, totalnum, conn))
   p.start()
 
   #need to add the pipe module
   while 1:
     try:
-      line = pipein.get_nowait()
+      print "before read========" 
+      line = pipein.readline()[:-1]
+      print line + "get message from web process que"
     except:
-      pass
+      print "none data in ipc pipe"
     magmessage = ""
 
     try:
@@ -121,7 +123,8 @@ if __name__ == "__main__":
       schema , command = line.split("'")[1], line.split("'")[3].split("/")
       message= ""
       if schema == "window":
-        for i in range(root.gettotalnum):
+        message = "?/?/"
+        for i in range(root.gettotalnum()):
           if (i == int(command[0])-1):
             message += command[1]
             continue
@@ -130,15 +133,21 @@ if __name__ == "__main__":
       else:
         if schema == "light":
           c.execute("select * from light order by ID DESC limit 1")
+          dbtable = c.fetchone()
+          for i in range(root.gettotalnum()):
+            if (i == int(command[0])-1):
+              message+= command[1]
+              continue
+            message+=str(dbtable[i-1])
+          message+="/?/?"
         elif schema == "temper":
-          c.execute("selct * from temper order by ID DESC limit 1")
-        dbtable = c.fetchone()
-        for i in range(root.gettotalnum):
-          if (i == int(command[0])-1):
-            message+= command[1]
-            continue
-          message+=dbtable[i-1]
-      
+          for i in range(root.gettotalnum()):
+            if (i == int(command[0])-1):
+              message+= command[1]
+              continue
+            message+= '?'
+          message = "?/" + message + "/?"
+      message = "put/"+message
       #parisng the jsonand make the message (need to access the DB data) 
       queue.append(message)
 

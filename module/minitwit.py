@@ -236,8 +236,10 @@ def action(led, num, act):
 	else:
 		command = 0
 	
-	message = "{ 'light' : '%d/%d'}"%(int(num), int(command))
+	message = "{'light' : '%d/%d'}\n"%(int(num), int(command))
+        print message + "before wirte pipe=============="
 	os.write(pipout, message)
+	print message + "after wirte pipe============"
 	
 	light = []
 	temper = []
