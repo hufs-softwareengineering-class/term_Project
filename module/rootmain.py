@@ -74,15 +74,6 @@ if __name__ == "__main__":
     c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
         .format(tn = tempertable, nf = roomnum, ft="INTEGER"))
   
-
-  for i in range(0, root.gettotalnum()):
-    roomnum = "room" + str(i+1)
-    c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
-        .format(tn = lighttable, nf = roomnum, ft="INTEGER"))
-  
-    c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
-        .format(tn = tempertable, nf = roomnum, ft="INTEGER"))
-  
     c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
         .format(tn = humidtable, nf = roomnum, ft="INTEGER"))
   
