@@ -8,6 +8,10 @@ import threading
 from GPIOlightread import *
 from GPIOtemperread import *
 from GPIOhumidread import *
+from GPIOlightwriter import *
+from GPIOtemperwriter import *
+from GPIOhumidwriter import *
+
 
 class myThread(threading.Thread):
   def __init__(self, node, sensingType):
@@ -142,27 +146,29 @@ class Node():
     # if state == -1, then current state maintain
     if dataparse[1] != "?":
       if dataparse[1][self.number] is "1":
-        data = 0
+        GPIOlightWriter(1)
         #turn on the light
       elif dataparse[1][self.number] is "0":
-        data = 0
+        GPIOlightWriter(0)
         #turn off the light
     # temperature state = {-1(unchange), 0(up temperature), 1(down temperature)}
     if dataparse[2] != "?":
       if dataparse[2][self.number] is "0":
-        data = 0
+        GPIOtemperWriter(0)
         #turn on the temperature light blue
 
       elif dataparse[2][self.number] is "1":
-        data = 0
+        GPIOtemperWriter(1)
         #turn on the temperature light red
+      else:
+        GPIOtemperWriter(-1)
 
     if dataparse[3] != "?":
       if dataparse[3][self.number] is "1":
-        data = 0
+        GPIOhumidWriter(1)
         #open the window
       elif dataparse[3][self.number] is "0":
-        data = 0
+        GPIOhumidWriter(0)
         #close the window
 
     

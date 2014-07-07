@@ -11,6 +11,9 @@ from GPIOlightread import *
 from GPIOtemperread import *
 from GPIOhumidread import *
 from GPIOmagnetread import *
+from GPIOlightwriter import *
+from GPIOtemperwriter import *
+from GPIOhumidwriter import *
 
 class myThread(threading.Thread):
   def __init__(self, node, sensingType, que):
@@ -191,6 +194,27 @@ class Root():
   def putData(self, message):
     dataparse = message.split('/')
     print dataparse[1][0], dataparse[2][0], dataparse[3][0]
+
+    if dataparse[1] != "?":
+      if dataparse[1][0] is "1":
+        GPIOlightWriter(1)
+      elif dataparse[1][0] is "0":
+        GPIOlightWriter(0)
+
+    if dataparse[2] != "?":
+      if dataparse[2][0] is "0":
+        GPIOtemperWriter(0)
+      elif dataparse[2][0] is "1":
+        GPIOtemperWriter(1)
+      else:
+        GPIOtemperWriter(-1)
+
+    if dataparse[3] != "?":
+      if dataparse[3][0] is "1":
+        GPIOhumidWriter(1)
+      elif dataparse[3][0] is "0":
+        GPIOhumidWriter(0)
+
     
     for i in self.child:
       clientmodule(message, self.dic_addr[i])
