@@ -6,7 +6,7 @@ import sys
 import bluetooth
 import time
 def clientmodule(message, addr):
-  time.sleep(2)
+  time.sleep(4)
   if sys.version < '3':
     input = raw_input
 
