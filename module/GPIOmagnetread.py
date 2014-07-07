@@ -4,7 +4,7 @@ GPIO.setup("P8_7", GPIO.IN)
 def GPIOmagnetRead():
 if GPIO.input("P8_7") == True:
         print "Door is close..."
-	return 1
+	return 0
 else:
         print "Door is OPEN!"
-	return 0
+	return 1
