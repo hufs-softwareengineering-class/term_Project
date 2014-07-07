@@ -35,9 +35,9 @@ print "hello mungchung"
 #DB 설정 부분...추후 수정요
 # configuration
 DATABASE = './minitwit.db'
-#PER_PAGE = 30
+PER_PAGE = 30
 DEBUG = True
-#SECRET_KEY = 'development key'
+SECRET_KEY = 'development key'
 
 #LED name and GPIO number
 #key is 'RoomNum' -> how to send a message to bb?
