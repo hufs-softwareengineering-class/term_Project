@@ -219,11 +219,6 @@ def Manual():
 	return render_template('Manual.html', error=error, light=light, \
 			temper=temper, humid=humid, totalnum=totalnum)
 
-@app.route('/Usertemp')
-def Usertemp():
-#	"""test GPIO"""
-	#error = None
-	return render_template('tempset.html', leds=leds)
 
 #LED ON/OFF 버튼 누를때 실행되는 부분
 #LED state : GPIO.input("P8_10")
@@ -339,6 +334,15 @@ def test():
 	error = None
 	return render_template('test.html', error=error, light=light, \
 			temper=temper, humid=humid, totalnum=totalnum)
+
+
+@app.route('/Usertemp' methods=['GET', 'POST'])
+def Usertemp():
+	if request.method == 'POST':
+		print 'usertemp' + "============> USER TEMP 1"
+		print 'usertemp2' + "============> USER TEMP 2"
+		return render_template('tempset.html')
+	return render_template('tempset.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
