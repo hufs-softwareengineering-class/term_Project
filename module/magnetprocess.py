@@ -11,25 +11,24 @@ def magnetSensing(que, total_num, conn):
   human_num = 0
   prevention_Mode = 0
   prique = []
-  sqllite_file = "our_db.splite"
+  sqllite_file = "our_db.sqlite"
   pipe_name = "pipefile2"
   line = ""
-  cursor = conn.cursor()
+  con = sqlite3.connect("our_db.sqlite", check_same_thread = False)
+  cursor = con.cursor()
   webpipeque = Queue()
   webpipe = Process(target = pipeprocess2, args = (webpipeque, pipe_name))
   webpipe.start()
   
  
-  if not os.path.exists(pipe_name):
-    os.mkfifo(pipe_name)
 
-  pipein = open(pipe_name, 'r')
   
   prevention_Mode = 1
   
   while 1:
+    line = ""
     try:
-      line = pipein.readline()[:-1]
+      line = webpipeque.get(block = False, timeout = 1)
     except:
       pass
     if line != "":
@@ -37,7 +36,7 @@ def magnetSensing(que, total_num, conn):
 
       # need to parse
       # setting prevention_Mode
-    magnet_state = GPIOmagnetRead()
+    magnet_state = GPIOmagnetRead() 
     distance_flag = GPIOdistance()
     # read distance_flag
     if distance_flag == 0 and magnet_state == 1:
@@ -59,22 +58,29 @@ def magnetSensing(que, total_num, conn):
             prique[i].append(0)
         totalsum = 0
         for i in range(total_num - 1):
-          for j in range(i +1, total_num-1):
-            query = "select count (*) from light where room%d == 1 and room%d == 1" %(i, j)
+          for j in range(i +1, total_num):
+            print "before query@@@@@"
+            query = "select count (*) from light where room%d == 1 and room%d == 1" %(i+1, j+1)
+	    print "after query@@@@@@"
             cursor.execute(query)
+	    print "after1 query@@@@@@"
             prique[i][j] = int(cursor.fetchone[0])
+	    print "after2 query@@@@@@"
             totalsum += prique[i][j]
+	    print "after3 query@@@@@@"
         basenum = totalsum /((total_num*(total_num -1)) /2)
+	print "after4 query@@@@@@"
         temparr = []
         for i in range(total_num):
           temparr.append(0)
-
+	print "debug1 @@@@@@@@@@@@@ "
         for i in range(total_num -1 ):
-          for j in range(i+1, total_num -1 ):
+          for j in range(i+1, total_num):
             if prique[i][j]>basenum:
               temparr[i] = 1
               temparr[j] = 1
 
+	print "debug2 @@@@@@@@@@@@@ "
 
         templight = ""
         for i in temparr:
@@ -82,9 +88,10 @@ def magnetSensing(que, total_num, conn):
             templight +="1"
           else:
             templight += "0"
+	print "debug3 @@@@@@@@@@@@@ "
 
         message = "put/%s/%s/%s" %(templight, "?", "?")
-        print message
+        print message + "====================="
         print "\n"
         que.put(message)
     elif distance_flag == 1 and magnet_state == 1:

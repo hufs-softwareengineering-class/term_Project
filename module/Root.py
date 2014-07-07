@@ -170,12 +170,13 @@ class Root():
     result = self.cursor.fetchone()
     base_high = result[2]
     base_row = result[1]
+    print base_high, " " ,base_row
     
 
     tempTemper = ""
     tempHumid = ""
     
-    for i in range (0, self.total_num):
+    for i in range (1, self.total_num+1):
       if temperarr[i] > base_high :
         tempTemper += "1"
       elif temperarr[i] < base_row :
