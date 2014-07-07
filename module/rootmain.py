@@ -1,10 +1,10 @@
 from Root import *
 import errno
-import signal
 import sqlite3
 import os, time, sys
 from multiprocessing import Process, Queue
 from magnetprocess import *
+from pipeprocess import *
 
 sqlite_file = 'our_db.sqlite'    # name of the sqlite database file
 lighttable = 'light'
@@ -16,19 +16,23 @@ pipe_name = "pipefile"
 Time = datetime.datetime.now()
 timeList = []
 line = ""
-flag  = 0
-def handler(signo, frame):
-  print 'Signal handler called with signal', signum
-  flag = 1
-
+def safe_read(fd, size=1024):
+   ''' reads data from a pipe and returns `None` on EAGAIN '''
+   try:
+      return os.read(fd, size)
+   except OSError, exc:
+      if exc.errno == errno.EAGAIN:
+         return None
+      raise
 
 if __name__ == "__main__":
-  if not os.path.exists(pipe_name):
-    os.mkfifo(pipe_name)
-  signal.signal(signal.SIGUSR1 , handler)
-  print "hello"
-  pipein = open(pipe_name, 'r')
-
+  #if not os.path.exists(pipe_name):
+   # os.mkfifo(pipe_name)
+  #print "hello"
+ # pipein = open(pipe_name, 'r')
+  webpipeque = Queue()
+  webpipe = Process(target = pipeprocess, args = (webpipeque, pipe_name))
+  webpipe.start()
   conn = sqlite3.connect(sqlite_file, check_same_thread=False)
   conn.isolation_level =None
   c = conn.cursor()
@@ -111,18 +115,19 @@ if __name__ == "__main__":
       print "before read========" 
       #line = pipein.readline()[:-1]
       #line = os.read(pipein, 1024)
-      if os.path.getsize("pipefile") !=0:
-        line = pipein.readline()[:-1]
-        print line + "get message from web process que"
+      line = webpipeque.get(block = False , timeout =1)
+      print line + "get message from web process que"
     except:
       print "none data in ipc pipe"
-    magmessage = ""
-
+      line = ""
+      time.sleep(2)
+    magmessage= ""
     try:
       magmessage = que.get(block = False ,timeout = 1)
       print "get message from magprocess que"
     except:
       print "none data in ipc queue"
+      magmessage = ""
 
     if magmessage =="":
       pass
@@ -131,14 +136,15 @@ if __name__ == "__main__":
     if line!="": # need to modify
       #need to parsing the json and make meassage , then enqueue the message to the queue
       #need to parsing the mode 
-      schema , command = line.split("'")[1], line.split("'")[3].split("/")
+      schema = line.split("'")[1]
+      command = line.split("'")[3].split("/")
       message= ""
       if schema == "window":
         message = "?/?/"
         for i in range(root.gettotalnum()):
-          if (i == int(command[0])-1):
+          if (i == int(command[0])):
             message += command[1]
-            continue
+	    continue
           message+= '?'
 
       else:
@@ -146,20 +152,21 @@ if __name__ == "__main__":
           c.execute("select * from light order by ID DESC limit 1")
           dbtable = c.fetchone()
           for i in range(root.gettotalnum()):
-            if (i == int(command[0])-1):
+            if (i == int(command[0])):
               message+= command[1]
               continue
-            message+=str(dbtable[i-1])
+            message+=str(dbtable[i+1])
           message+="/?/?"
         elif schema == "temper":
           for i in range(root.gettotalnum()):
-            if (i == int(command[0])-1):
+            if (i == int(command[0])):
               message+= command[1]
               continue
             message+= '?'
           message = "?/" + message + "/?"
       message = "put/"+message
       #parisng the jsonand make the message (need to access the DB data) 
+      print message + "===============message==========="
       queue.append(message)
 
     elif len(queue) == 0: #need to modify

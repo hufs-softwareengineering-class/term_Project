@@ -168,8 +168,9 @@ class Root():
 
     self.cursor.execute("SELECT *FROM setting order by ID DESC limit 1")
     result = self.cursor.fetchone()
-    base_high = result[1]
-    base_row = result[2]
+    base_high = result[2]
+    base_row = result[1]
+    
 
     tempTemper = ""
     tempHumid = ""
