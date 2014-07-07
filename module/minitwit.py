@@ -336,7 +336,7 @@ def test():
 			temper=temper, humid=humid, totalnum=totalnum)
 
 
-@app.route('/Usertemp' methods=['GET', 'POST'])
+@app.route('/Usertemp', methods=['GET', 'POST'])
 def Usertemp():
 	if request.method == 'POST':
 		print 'usertemp' + "============> USER TEMP 1"
