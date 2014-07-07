@@ -64,7 +64,7 @@ def magnetSensing(que, total_num, conn):
 	    print "after query@@@@@@"
             cursor.execute(query)
 	    print "after1 query@@@@@@"
-            prique[i][j] = int(cursor.fetchone[0])
+            prique[i][j] = int(cursor.fetchone()[0])
 	    print "after2 query@@@@@@"
             totalsum += prique[i][j]
 	    print "after3 query@@@@@@"
@@ -76,7 +76,7 @@ def magnetSensing(que, total_num, conn):
 	print "debug1 @@@@@@@@@@@@@ "
         for i in range(total_num -1 ):
           for j in range(i+1, total_num):
-            if prique[i][j]>basenum:
+            if prique[i][j]>=basenum:
               temparr[i] = 1
               temparr[j] = 1
 
