@@ -9,19 +9,19 @@ def clientmodule(message, addr):
   if sys.version < '3':
     input = raw_input
 
-  sock=bluetooth.BluetoothSocket(bluetooth.L2CAP)
-  bt_addr=addr
-  print bt_addr
-  port = 0x1001
-
-  print("trying to connect to %s on PSM 0x%X" % (bt_addr, port))
   while True:
     try:
+      sock=bluetooth.BluetoothSocket(bluetooth.L2CAP)
+      bt_addr=addr
+      port = 0x1001
+
+      print("trying to connect to %s on PSM 0x%X" % (bt_addr, port))
       sock.connect((bt_addr, port))
       print("connected.  type stuff")
       break
     except:
       print ("try reconnect bluetooth after 1 sec")
+      sock.close()
       time.sleep(1)
       continue
 
