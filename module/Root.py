@@ -114,9 +114,9 @@ class Root():
       if num_index == self.total_num:
         break
       if num_index == self.number:
-        self.light_state = GPIOlightRead()
-        self.temperature_state = GPIOtemperRead()
-        self.humid_state = GPIOhumidRead()
+        self.light_state = 1#GPIOlightRead()
+        self.temperature_state = 1#GPIOtemperRead()
+        self.humid_state = 1#GPIOhumidRead()
         lightarr[0] = self.light_state
         temperarr[0] = self.temperature_state
         humidarr[0] = self.humid_state
@@ -197,23 +197,23 @@ class Root():
 
     if dataparse[1] != "?":
       if dataparse[1][0] is "1":
-        GPIOlightWriter(1)
+        pass#GPIOlightWriter(1)
       elif dataparse[1][0] is "0":
-        GPIOlightWriter(0)
+        pass#GPIOlightWriter(0)
 
     if dataparse[2] != "?":
       if dataparse[2][0] is "0":
-        GPIOtemperWriter(0)
+        pass#GPIOtemperWriter(0)
       elif dataparse[2][0] is "1":
-        GPIOtemperWriter(1)
+        pass#GPIOtemperWriter(1)
       else:
-        GPIOtemperWriter(-1)
+        pass#GPIOtemperWriter(-1)
 
     if dataparse[3] != "?":
       if dataparse[3][0] is "1":
-        GPIOhumidWriter(1)
+        pass#GPIOhumidWriter(1)
       elif dataparse[3][0] is "0":
-        GPIOhumidWriter(0)
+        pass#GPIOhumidWriter(0)
 
     
     for i in self.child:
