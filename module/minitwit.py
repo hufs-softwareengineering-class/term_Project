@@ -236,25 +236,25 @@ def action(cmd, num, act):
 		else:
 			command = 0
 		message = "{'light' : '%d/%d'}\n"%(int(num), int(command))
-        print message + "before wirte pipe=============="
+        	print message + "before wirte pipe=============="
 		os.write(pipout, message)
 		print message + "after wirte pipe============"
-	else if cmd == 'window':
+	elif cmd == 'window':
 		if act == "on":
 			command = 1
 		else:
 			command = 0
 		message = "{'window' : '%d/%d'}\n"%(int(num), int(command))
-        print message + "before wirte pipe=============="
+        	print message + "before wirte pipe=============="
 		os.write(pipout, message)
 		print message + "after wirte pipe============"
-	else if cmd == 'temper':
+	elif cmd == 'temper':
 		if act == "up":
 			command = 1
 		else:
 			command = 0
 		message = "{'temper' : '%d/%d'}\n"%(int(num), int(command))
-        print message + "before wirte pipe=============="
+        	print message + "before wirte pipe=============="
 		os.write(pipout, message)
 		print message + "after wirte pipe============"
 

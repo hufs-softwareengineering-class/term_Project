@@ -2,6 +2,8 @@ import sqlite3
 import os, time, sys
 from GPIOmagnetread import *
 from GPIOdistance import *
+from multiprocessing import Process, Queue
+from pipeprocess import *
 def magnetSensing(que, total_num, conn):
   tempolight = ""
   magnet_state = 0
@@ -14,7 +16,7 @@ def magnetSensing(que, total_num, conn):
   line = ""
   cursor = conn.cursor()
   webpipeque = Queue()
-  webpipe = Process(target = pipeprocess, args = (webpipeque, ))
+  webpipe = Process(target = pipeprocess, args = (webpipeque, pipe_name))
   webpipe.start()
   
  

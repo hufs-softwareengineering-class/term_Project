@@ -4,6 +4,7 @@ import sqlite3
 import os, time, sys
 from multiprocessing import Process, Queue
 from magnetprocess import *
+from pipeprocess import *
 
 sqlite_file = 'our_db.sqlite'    # name of the sqlite database file
 lighttable = 'light'
@@ -30,7 +31,7 @@ if __name__ == "__main__":
   #print "hello"
  # pipein = open(pipe_name, 'r')
   webpipeque = Queue()
-  webpipe = Process(target = pipeprocess, args = (webpipeque, ))
+  webpipe = Process(target = pipeprocess, args = (webpipeque, pipe_name))
   webpipe.start()
   conn = sqlite3.connect(sqlite_file, check_same_thread=False)
   conn.isolation_level =None
