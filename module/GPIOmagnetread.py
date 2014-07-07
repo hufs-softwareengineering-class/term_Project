@@ -1,9 +1,10 @@
+import Adafruit_BBIO.GPIO as GPIO
 
-import Adafruit_BBIO.ADC as ADC
-import random
+GPIO.setup("P8_7", GPIO.IN)
 def GPIOmagnetRead():
-  ADC.setup() 
-  return 1#random.randint(0,1)
-  #return ADC.read("P9_33")
-
-
+if GPIO.input("P8_7") == True:
+        print "Door is close..."
+	return 1
+else:
+        print "Door is OPEN!"
+	return 0
