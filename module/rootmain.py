@@ -1,4 +1,5 @@
 from Root import *
+import errno
 import sqlite3
 import os, time, sys
 from multiprocessing import Process, Queue
@@ -14,6 +15,14 @@ pipe_name = "pipefile"
 Time = datetime.datetime.now()
 timeList = []
 line = ""
+def safe_read(fd, size=1024):
+   ''' reads data from a pipe and returns `None` on EAGAIN '''
+   try:
+      return os.read(fd, size)
+   except OSError, exc:
+      if exc.errno == errno.EAGAIN:
+         return None
+      raise
 
 if __name__ == "__main__":
   if not os.path.exists(pipe_name):
@@ -101,7 +110,8 @@ if __name__ == "__main__":
   while 1:
     try:
       print "before read========" 
-      line = pipein.readline()[:-1]
+      #line = pipein.readline()[:-1]
+      line = os.read(pipein, 1024)
       print line + "get message from web process que"
     except:
       print "none data in ipc pipe"
