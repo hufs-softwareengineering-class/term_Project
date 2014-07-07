@@ -193,6 +193,7 @@ def Manual():
 	light = []
 	temper = []
 	humid = []
+	t_inve = inve
 	totalnum = 2
 #	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
 #	totalnum = int(cursor.fetchone()[1])
@@ -220,7 +221,7 @@ def Manual():
 	
 	error = None
 	return render_template('Manual.html', error=error, light=light, \
-			temper=temper, humid=humid, totalnum=totalnum, t_inve=inve)
+			temper=temper, humid=humid, totalnum=totalnum, t_inve=t_inve)
 
 
 #LED ON/OFF 버튼 누를때 실행되는 부분
@@ -270,6 +271,7 @@ def action(cmd, num, act):
 	light = []
 	temper = []
 	humid = []
+	t_inve = inve
 	totalnum = 2
 #	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
 #	totalnum = int(cursor.fetchone()[1])
@@ -298,7 +300,7 @@ def action(cmd, num, act):
 	
 	error = None
 	return render_template('Manual.html', error=error, light=light, \
-			temper=temper, humid=humid, totalnum=totalnum, inve=inve)
+			temper=temper, humid=humid, totalnum=totalnum, t_inve=t_inve)
 
 def login():
     """Logs the user in."""
