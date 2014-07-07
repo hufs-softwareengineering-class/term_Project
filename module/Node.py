@@ -97,7 +97,7 @@ class Node():
 
       clientmodule(message, self.dic_addr[self.parent[0]])
 
-    elif int(dataparse[1]) in child:
+    elif int(dataparse[1]) in self.child:
       #if the target in child array
       child_index = self.child.index(int(dataparse[1]))
       message = "%s/%s" %(dataparse[0], dataparse[1])
