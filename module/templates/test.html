@@ -8,7 +8,7 @@
 		<tbody>
 			{% for i in range(totalnum) %}			
 			<tr>
-				<th>Room {{ i }}&nbsp;
+				<th>Room {{ i+1 }}&nbsp;
 					<td> Light : {% if light[i] == 1 %} ON {% else %} OFF{% endif %} /
 					<td> Temp : {{ temper[i] }} 도 /
 					<td> Humid : {{ humid[i] }} %		 
