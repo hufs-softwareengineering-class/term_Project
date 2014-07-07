@@ -92,22 +92,22 @@ if __name__ == "__main__":
   c.execute(humidquery, baselist)
   totalnum = root.gettotalnum()
 
- # p = Process(target = magnetSensing, args=(que, totalnum))
- # p.start()
+  p = Process(target = magnetSensing, args=(que, totalnum))
+  p.start()
   #need to add the pipe module
   while 1:
     line = pipein.readline()[:-1]
-  #  magmessage = ""
+    magmessage = ""
 
-    #try:
-    #  magmessage = que.get(block = False ,timeout = 1)
-    #except:
-     # print "none data in ipc queue"
+    try:
+      magmessage = que.get(block = False ,timeout = 1)
+    except:
+      print "none data in ipc queue"
 
-    #if magmessage =="":
-    #  pass
-    #else :
-    #  queue.append(magmessage)
+    if magmessage =="":
+      pass
+    else :
+      queue.append(magmessage)
     if line!="": # need to modify
       #need to parsing the json and make meassage , then enqueue the message to the queue
       #need to parsing the mode 
