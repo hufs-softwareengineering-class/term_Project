@@ -30,7 +30,14 @@ def magnetSensing(que, total_num):
     # read distance_flag
     if distance_flag == 0 and magnet_state == 1:
       human_num += 1
+      cur_num = []
+      cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
+      result = int(cursor.fetchone()[0])
+      cur_num.append(result)
+      cur_num.append(human_num)
+      cursor.execute("insert into cur_person values (?, ?)", cur_num)
       if human_num == 1:
+        print "what the fuck"
         tempolight = ""
 
         prique = []
@@ -65,9 +72,18 @@ def magnetSensing(que, total_num):
             templight += "0"
 
         message = "put/%s/%s/%s" %(templight, "?", "?")
+        print message
+        print "\n"
         que.put(message)
     elif distance_flag == 1 and magnet_state == 1:
       human_num = human_num -1
+      cur_num = []
+      cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
+      result = int(cursor.fetchone()[0])
+      cur_num.append(result)
+      cur_num.append(human_num)
+      cursor.execute("insert into cur_person values (?, ?)", cur_num)
+      
       templight = ""
       if human_num == 0:
         for i in total_num:
