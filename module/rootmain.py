@@ -93,8 +93,8 @@ if __name__ == "__main__":
       message = 0#parisng the jsonand make the message (need to access the DB data) 
       queue.append(message)
 
-    elif queue.len() == 0: #need to modify
-      root.getData()
+    elif len(queue) == 0: #need to modify
+      root.getData(queue)
     else :
       text = queue.pop()
       root.putData(text)

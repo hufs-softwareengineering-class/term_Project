@@ -86,7 +86,7 @@ class Root():
           self.count = int(dataparse[1])
 
         if self.search_index is len(self.addr):
-          self.total_num = int(dataparse[1])
+          self.total_num = int(dataparse[1])+1
           break
         else:
           message = "search/%d/%d" %(int(dataparse[1]), self.number)
@@ -105,9 +105,10 @@ class Root():
       humidarr.append(0)
 
     print "---------------get------------"
+    print "total num ", self.total_num
     num_index = 0
     while 1:
-      if num_index == self.total_num + 1:
+      if num_index == self.total_num:
         break
       if num_index == self.number:
         #get the state of root's light & temperature...
@@ -123,15 +124,15 @@ class Root():
         dataparse = data.split('/')
 
         if dataparse[1] == "success":
-          lightarr[num_index]=int(database[2])
-          temperarr[num_index]=int(database[3])
-          humidarr[num_index]=int(database[4])
+          lightarr[num_index]=int(dataparse[2])
+          temperarr[num_index]=int(dataparse[3])
+          humidarr[num_index]=int(dataparse[4])
           break
         #if dataparse[1] is fail, then send getMessage to  other chiled 
 
       num_index=num_index+1
     # after getting the humid & temper state, put   
-    self.cursor.execute("SELECT ID FROM lighttable order by ID DESC limit 1")
+    self.cursor.execute("SELECT ID FROM light order by ID DESC limit 1")
     result = int(self.cursor.fetchone()[0])
     lightarr.insert(0, result+1)
     temperarr.insert(0, result+1)
@@ -151,7 +152,7 @@ class Root():
     self.cursor.execute(temperquery, temperarr)
     self.cursor.execute(humidquery, humidarr)
 
-    self.cursor.execute("SELECT *FROM usertemper_setting order by ID DESC limit 1")
+    self.cursor.execute("SELECT *FROM setting order by ID DESC limit 1")
     result = self.cursor.fetchone()
     base_high = result[1]
     base_row = result[2]
@@ -174,6 +175,7 @@ class Root():
 
 
     message = "put/%s/%s/%s" %("?", tempTemper, tempHumid)
+    que.append(message)
   
   def putData(self, message):
     dataparse = message.split('/')
