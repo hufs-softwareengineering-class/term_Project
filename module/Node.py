@@ -12,6 +12,7 @@ class Node():
   child = [] #child of myNOde
   number = -1 #myNumber
 
+  get_target = -1 #store targetnumber
   indexflag = 0 #need to change when all child visit(get)
   light_state = 0 #store light state
   window_state = 0 #store window state
@@ -43,13 +44,82 @@ class Node():
         clientmodule(message, address)
 
 
-
   def searchres(self, dataparse, address):
+    if self.count != int(dataparse[1]) :
+      self.child.append(self.count + 1)
+      self.dic_addr[self.count + 1] = address
+      self.count = int(dataparse[1])
+
+    if self.search_index == len(self.addr):
+      print "number", self.number
+      print "parent : ", self.parent
+      print "child : ", self.child
+      message = "searchres/%d" %(int(dataparse[1]))
+      clientmodule(message, self.dic_addr.get(int(self.parent[0])))
+
+    else:
+      message = "search/%d/%d" %(int(dataparse[1]), self.number)
+      clientmodule(message, self.addr[self.search_index].getaddr())
+      self.search_index = self.search_index + 1
+
+
 
   def get(self, dataparse, address):
+    self.get_target = int(dataparse[1])
+    if int(dataparse[1]) is self.number:
+      self.light_state = 1
+      self.temperature_state = 1
+      self.window_state = 1
+
+      message = "%s/%s/%d/%d/%d" %("getres","success",self.light_state,self.temperature_state, self.window_state)
+
+      clientmodule(message,self.dic_addr[self.parent[0]])
+
+    elif len(self.child) is 0:
+      #if this node is leaf node and incorrent number node
+      #send fail message to parent
+      message = "%s/%s/%d/%d/%d" %("getres", "fail", -1, -1, -1)
+
+      clientmodule(message, self.dic_addr[self.parent[0]])
+
+    elif int(dataparse[1]) in child:
+      #if the target in child array
+      child_index = self.child.index(int(dataparse[1]))
+      message = "%s/%s" %(dataparse[0], dataparse[1])
+      clientmodule(message, self.dic_addr[self.child[child_index]])
+
+
+    else:
+      #check the index flag
+      #and then send message
+      message = "%s/%s" %(dataparse[0], dataparse[1])
+      clientmodule(message, self.dic_addr[self.child[self.indexflag]])
+      self.indexflag = self.indexflag + 1
+
+
 
   def getres(self, dataparse, address):
+    if dataparse[1] is "success":
+      #if data is success
+      message = "%s/%s/%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2], dataparse[3], dataparse[4])
+      clientmodule(message, self.dic_addr[self.parent[0]])
+      self.indexflag = 0
+
+    else:
+      #if data is fail
+      if self.indexflag < len(self.child):
+        #send get message other childs
+        message = "%s/%d" %("get", self.get_target)
+        clientmodule(message, self.dic_addr[self.child[self.indexflag]])
+        self.indexflag = self.indexflag + 1
+
+      else:
+        #send fail(getres) message to parent, because already check all child
+        message = "%s/%s" %(dataparse[0], dataparse[1])
+        clientmodule(message, self.dic_addr[self.parent[0]])
+        self.indexflag = 0
+
 
   def put(self, dataparse, address):
-
+    if dataparse[1][self.number] 
     
