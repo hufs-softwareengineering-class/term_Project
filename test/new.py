@@ -149,6 +149,7 @@ def searchres(dataparse, address):
   global search_index
   global number
   global count
+  
   if count != int(dataparse[1]):
     child.append(count+1)
     dic_addr[count+1] = address
@@ -173,32 +174,32 @@ def get(dataparse, address):
   global indexflag
   global number
   global get_target
-  global sensor_type
+  #global sensor_type
   get_target = int(dataparse[1])
-  sensor_type = dataparse[2]
+  #sensor_type = dataparse[2]
   if int(dataparse[1]) is number:
     #send success messag
     light_state = 1
-    message = "%s/%s/%d" %("getres","success" ,light_state)
+    message = "%s/%s/%d/%d" %("getres","success" ,light_state, 1)#last 1 is temper_state
      
     clientmodule(message, dic_addr[parent[0]])
 
   elif len(child) is 0: 
     #if this node is leaf node and incorrect number node
     #send fail message to parent 
-    message = "%s/%s/%d" %("getres", "fail", -1)
+    message = "%s/%s/%d/%d" %("getres", "fail", -1, -1)
     clientmodule(message, dic_addr[parent[0]])
 
   elif int(dataparse[1]) in child:
     #if the target in child array
     child_index = child.index(int(dataparse[1]))
-    message = "%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2])
+    message = "%s/%s" %(dataparse[0], dataparse[1])
     clientmodule(message, dic_addr[child[child_index]])
   
   else:
     #check the index flag
     #and then send message
-    message = "%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2])
+    message = "%s/%s" %(dataparse[0], dataparse[1])
     clientmodule(message, dic_addr[child[indexflag]])
     indexflag= indexflag+1
     
@@ -208,25 +209,26 @@ def get(dataparse, address):
 
 
 #----end-----
+# sensor_type is needed to remove
 def getres(dataparse, address):
   global indexflag
-  global sensor_type
+  #global sensor_type
   if dataparse[1] is "success":
     #if data is success
-    message = "%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2])
+    message = "%s/%s/%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2], dataparse[3], dataparse[4])
     clientmodule(message, dic_addr[parent[0]])
     indexflag = 0
   else:
     #if data is fail
     if indexflag < len(child):
       #send get message other childs
-      message = "%s/%d/%s" %("get",get_target , sensor_type) 
+      message = "%s/%d" %("get",get_target) 
       clientmodule(message, dic_addr[child[indexflag]])
       indexflag = indexflag+1
 
     else:
       #send fail(getres) message to parent, because already check all child
-      message = "%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2])
+      message = "%s/%s" %(dataparse[0], dataparse[1])
       clientmodule(message, dic_addr[parent[0]])
       indexflag = 0
 
@@ -255,15 +257,15 @@ schemas = {
 
 
 
-
+#main
 while 1:
   if len(sys.argv) is not 1:
     root(sys.argv[1])
-  data = servermodule()
-  dataparse = data.split('/')
-  schema = dataparse[0]
-  address = dataparse[len(dataparse)-1]
-  schemas[schema](dataparse, address)
+  data = servermodule() #get a message
+  dataparse = data.split('/') # parse the messae by '/'
+  schema = dataparse[0] #get a schema from data
+  address = dataparse[len(dataparse)-1] #store the address
+  schemas[schema](dataparse, address) #swich case
 
 
 
