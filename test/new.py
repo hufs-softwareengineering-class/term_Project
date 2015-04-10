@@ -180,7 +180,7 @@ def get(dataparse, address):
   if int(dataparse[1]) is number:
     #send success messag
     light_state = 1
-    message = "%s/%s/%d" %("getres","success" ,light_state)
+    message = "%s/%s/%d/%d" %("getres","success" ,light_state, 1)#last 1 is temper_state
      
     clientmodule(message, dic_addr[parent[0]])
 
