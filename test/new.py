@@ -187,7 +187,7 @@ def get(dataparse, address):
   elif len(child) is 0: 
     #if this node is leaf node and incorrect number node
     #send fail message to parent 
-    message = "%s/%s/%d" %("getres", "fail", -1)
+    message = "%s/%s/%d/%d" %("getres", "fail", -1, -1)
     clientmodule(message, dic_addr[parent[0]])
 
   elif int(dataparse[1]) in child:
