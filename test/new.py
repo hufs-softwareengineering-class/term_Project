@@ -215,7 +215,7 @@ def getres(dataparse, address):
   #global sensor_type
   if dataparse[1] is "success":
     #if data is success
-    message = "%s/%s" %(dataparse[0], dataparse[1])
+    message = "%s/%s/%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2], dataparse[3], dataparse[4])
     clientmodule(message, dic_addr[parent[0]])
     indexflag = 0
   else:
