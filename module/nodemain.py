@@ -1,6 +1,7 @@
 import Node
 import sys
 import time
+import threading
 from test_inquiry import *
 from servermodule import *
 from clientmodule import *
@@ -13,7 +14,8 @@ schemas = {
     "put" : put
     }
 node = Node()
-
+th=threading.Thread(target = node.run())
+th.start()
 while 1:
   data = servermodule()
   dataparse = data.split('/')
