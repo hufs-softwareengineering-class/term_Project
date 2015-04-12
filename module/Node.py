@@ -122,4 +122,10 @@ class Node():
 
   def put(self, dataparse, address):
     if dataparse[1][self.number] 
-    
+
+
+    #append
+
+
+  def run():
+    #changing state with GPIO
