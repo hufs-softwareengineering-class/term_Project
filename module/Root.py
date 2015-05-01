@@ -22,6 +22,7 @@ class Root():
   message_Queue = Queue()
   Time = datetime.datetime.now()
   timeList = []
+  autoMode = 0 #initial autoMode bit zero
 
   #construcotr
   def __init__(self):
@@ -35,6 +36,15 @@ class Root():
   #insert the time to Timelist
   def insertTimelist(self, room, time):
     self.timeList.insert(room, time)
+
+  def setAutoMode():
+    self.autoMode = 1
+
+  def clearAutoMode():
+    self.autoMode = 0
+
+  def getAutoMode():
+    return self.autoMode
 
   #make DAG 
   def makeDAG():
@@ -68,30 +78,43 @@ class Root():
 
   def getData():
     print "child : ", self.child
+    
+    print "---------------get------------"
+    num_index = 0
     while 1:
-      print "---------------get------------"
-      num_index = 0
-      while 1:
-        if num_index == self.total_num + 1:
-          break
-        if num_index == self.number:
-          num_index = num_index + 1
-          continue
+      if num_index == self.total_num + 1:
+        break
+      if num_index == self.number:
+        #get the state of root's light & temperature...
+        num_index = num_index + 1
+        continue
         
-        child_num = 0
-        while 1:
-          message = "%s/%d" %("get", num_index)
-          clientmodule(message, self.dic_addr[self.child[child_num]])
-          child_num= child_num +1
-          data = servermodule()
-          dataparse = data.split('/')
+      child_num = 0
+      while 1:
+        message = "%s/%d" %("get", num_index)
+        clientmodule(message, self.dic_addr[self.child[child_num]])
+        child_num= child_num +1
+        data = servermodule()
+        dataparse = data.split('/')
 
-          if dataparse[1] == "success":
-            #need to fill 
-            #make algorithm 
+        if dataparse[1] == "success":
+          #need to fill 
+          #make algorithm
+          #transport light state of numindex to DB
+          if self.autoMode == 1:
+            if int(dataparse[3]) < 18:
+              # put the temper 22 to num_index
+            elif int(dataparse[3]) > 30  :
+              # put the temper 26 to num_index
 
-        num_index=num_index+1
+          break
+        #if dataparse[1] is fail, then send getMessage to  other chiled 
 
+      num_index=num_index+1
+    
+  def FirstOpenDoor():
+    # get the state from DB
+    # put the light
 
 
 
