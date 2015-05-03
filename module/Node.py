@@ -121,7 +121,22 @@ class Node():
 
 
   def put(self, dataparse, address):
-    if dataparse[1][self.number] 
+    # if state == -1, then current state maintain
+    if dataparse[1][self.number] is "1":
+      #turn on the light
+    elif dataparse[1][self.number] is "0":
+      #turn off the light
+    # temperature state = {-1(unchange), 0(up temperature), 1(down temperature)}
+    elif dataparse[2][self.number] is "0":
+      #turn on the temperature light blue
+
+    elif dataparse[2][self.number] is "1":
+      #turn on the temperature light red
+
+    elif dataparse[3][self.number] is "1":
+      #open the window
+    elif dataparse[3][self.number] is "0":
+      #close the window
 
 
     #append
