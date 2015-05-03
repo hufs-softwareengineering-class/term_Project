@@ -137,8 +137,14 @@ class Node():
       #open the window
     elif dataparse[3][self.number] is "0":
       #close the window
+    elif dataparse[4][self.number] is "1":
+      #ring the alarm
 
-
+    
+    message = "%s/%s/%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2], dataparse[3], dataparse[4])
+    
+    for i in child:
+      clientmodule(message, dic_addr[i])
     #append
 
 
