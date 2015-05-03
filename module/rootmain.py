@@ -7,6 +7,8 @@ timeList = []
 
 if __name__ == "__main__":
 
+  if not os.path.exists(pipe_name):
+    os.mkfifo(pipe_name)
 
   pipein = os.open(pipe_name, 'r')
 
@@ -17,10 +19,10 @@ if __name__ == "__main__":
   
   #need to add the pipe module
   while 1:
-    line = pipein.readline()[:-1]
-    if ~pipe.empty(): # need to modify
+    if ~pipein.empty(): # need to modify
+      line = pipein.readline()[:-1]
       queue.put(line)
-    else if pipe.empty(): #need to modify
+    else if pipein.empty(): #need to modify
       root.getData()
     else :
       text = queue.get()
