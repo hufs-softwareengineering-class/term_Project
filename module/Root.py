@@ -19,9 +19,6 @@ class Root():
   search_index = 0
   total_num = 0
   count = 0
-  message_Queue = Queue()
-  Time = datetime.datetime.now()
-  timeList = []
   autoMode = 0 #initial autoMode bit zero
 
   #construcotr
@@ -29,18 +26,10 @@ class Root():
     self.addr=getaddr_rssi()
     self.number = 0
 
-  #put the message to Queue
-  def putQueue(self, element):
-    self.message_Queue.put(element)
-
-  #insert the time to Timelist
-  def insertTimelist(self, room, time):
-    self.timeList.insert(room, time)
-
-  def setAutoMode():
+  def setAutoMode(self):
     self.autoMode = 1
 
-  def clearAutoMode():
+  def clearAutoMode(self):
     self.autoMode = 0
 
   def getAutoMode():
