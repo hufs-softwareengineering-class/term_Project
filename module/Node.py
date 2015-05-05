@@ -6,6 +6,8 @@ import sys
 import time
 import threading
 import GPIOlightread
+import GPIOtemperread
+import GPIOhumidread
 
 class myThread(threading.Thread):
   def __init__(self, node, sensingType):

@@ -6,6 +6,26 @@ import sys
 import time
 import datetime
 import Queue
+import threading
+import GPIOlightread
+import GPIOtemperread
+import GPIOhumidread
+import GPIOmagnetread
+
+class myThread(threading.Thread):
+  def __init__(self, node, sensingType):
+    super.__init__(self)
+    self.node = node
+    self.sensingType = sensingType
+    self.dictionary = {
+        "light" : lightSensing,
+        "temper" : temperSensing,
+        "humid" : humidSensing,
+        "magnet" : magnetSensing,
+        }
+
+  def run(self):
+    self.dictionary[self.sensingType]()
 
 class Root():
   addr = []
@@ -14,7 +34,7 @@ class Root():
   number = -1
   light_state = 0
   magnet_state = 0
-  window_state = 0
+  humid_state = 0
   temperature_state = 0
   search_index = 0
   total_num = 0
@@ -107,9 +127,37 @@ class Root():
 
 
 
+  def lightSensing(self):
+    while 1:
+      data = GPIOlightRead()
+      #we need to add mutex(the critical section is light_state)
+      if data >= 0.6:
+        self.light_state = 1
+      else:
+        self.light_state = 0
+      time.sleep(3)
+
+  def temperSensing(self):
+    while 1:
+      data = GPIOtemperRead()
+      #we ned to add mutex(the critical section is temper_state)
+      self.temper_state = data
+
+    time.sleep(3)
 
 
+  def humidSensing(self):
+    while 1:
+      data = GPIOhumidRead()
+      #we need to add mutex(the criticla section is humid_state)
+      self.humid_state = data
 
+    time.sleep(3)
+
+  def magnetSensing(self):
+    while 1:
+      self.magnet_state = GPIOmagnetRead()
+    time.sleep(3)
 
 
 
