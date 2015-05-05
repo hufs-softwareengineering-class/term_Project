@@ -15,7 +15,7 @@ class myThread(threading.Thread):
     self.dictionary = {
         "light" : lightSensing,
         "temper" : temperSensing,
-        "window" : windowSensing, 
+        "humid" : humidSensing, 
         }
 
   def run(self):
@@ -32,7 +32,7 @@ class Node():
   get_target = -1 #store targetnumber
   indexflag = 0 #need to change when all child visit(get)
   light_state = 0 #store light state
-  window_state = 0 #store window state
+  humid_state = 0 #store humid state
   temperature_state = 0 #store temperature state
   search_index = 0 #need to change when all child visit(search)
   
@@ -167,9 +167,27 @@ class Node():
 
   def lightSensing(self):
     while 1:
+      data = GPIOlightRead()
+      #we need to add mutex(the critical section is light_state)
+      if data >= 0.6:
+        self.light_state = 1
+      else:
+        self.light_state = 0
+      time.sleep(3)
 
   def temperSensing(self):
+    while 1:
+      data = GPIOtemperRead()
+      #we ned to add mutex(the critical section is temper_state)
+      self.temper_state = data
 
-  def windowSensing(self):
+    time.sleep(3)
 
 
+  def humidSensing(self):
+    while 1:
+      data = GPIOhumidRead()
+      #we need to add mutex(the criticla section is humid_state)
+      self.humid_state = data
+
+    time.sleep(3)
