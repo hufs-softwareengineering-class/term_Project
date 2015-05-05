@@ -4,6 +4,23 @@ from clientmodule import *
 from servermodule import *
 import sys
 import time
+import threading
+import GPIOlightread
+
+class myThread(threading.Thread):
+  def __init__(self, node, sensingType):
+    super.__init__(self)
+    self.node = node
+    self.sensingType = sensingType
+    self.dictionary = {
+        "light" : lightSensing,
+        "temper" : temperSensing,
+        "window" : windowSensing, 
+        }
+
+  def run(self):
+    self.dictionary[self.sensingType]()
+
 
 class Node():
   addr = [] #list of address and rssi
@@ -148,5 +165,11 @@ class Node():
     #append
 
 
-  def run():
-    #changing state with GPIO
+  def lightSensing(self):
+    while 1:
+
+  def temperSensing(self):
+
+  def windowSensing(self):
+
+
