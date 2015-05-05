@@ -1,6 +1,6 @@
 import Adafuit_BBIO.ADC as ADC
 
-def GPIOlightRead():
+def GPIOwindowRead():
   ADC.setup() 
   return ADC.read("P9_33")
 
