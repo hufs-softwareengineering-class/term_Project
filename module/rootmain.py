@@ -15,6 +15,10 @@ if __name__ == "__main__":
   # Make Queeue
   queue = Queue()
   root = Root()
+  lightSensingThread = myThread(root, "light")
+  temperSensingThread = myThread(root, "temper")
+  humidSensingThread = myThread(root, "humid")
+  magnetSensingThread = myThread(root, "magnet")
   root.makeDAG()
   
   #need to add the pipe module
