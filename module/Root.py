@@ -13,7 +13,7 @@ import GPIOhumidread
 import GPIOmagnetread
 
 class myThread(threading.Thread):
-  def __init__(self, node, sensingType):
+  def __init__(self, node, sensingType, que):
     super.__init__(self)
     self.node = node
     self.sensingType = sensingType
@@ -22,10 +22,11 @@ class myThread(threading.Thread):
         "temper" : temperSensing,
         "humid" : humidSensing,
         "magnet" : magnetSensing,
+        "infrared" : infraredSensing,
         }
 
   def run(self):
-    self.dictionary[self.sensingType]()
+    self.dictionary[self.sensingType](que)
 
 class Root():
   addr = []
@@ -40,6 +41,9 @@ class Root():
   total_num = 0
   count = 0
   autoMode = 0 #initial autoMode bit zero
+  human_num = 0
+  distance_flag = 0 # if distance is less than 50, distance_flag 1
+  prevention_Mode = 0 
 
   #construcotr
   def __init__(self):
@@ -110,24 +114,24 @@ class Root():
           #need to fill 
           #make algorithm
           #transport light state of numindex to DB
-          if self.autoMode == 1:
-            if int(dataparse[3]) < 18:
-              # put the temper 22 to num_index
-            elif int(dataparse[3]) > 30  :
-              # put the temper 26 to num_index
-
+          
           break
         #if dataparse[1] is fail, then send getMessage to  other chiled 
 
       num_index=num_index+1
-    
-  def FirstOpenDoor():
-    # get the state from DB
-    # put the light
+    # after getting the humid & temper state, put   
+  
+  def putDate(self, message):
+    for i in self.child:
+      clientmodule(message, self.dic_addr[i])
+
+    time.sleep(5)
+  
+  def setPrevention(self, value):
+    self.prevention_Mode = value
 
 
-
-  def lightSensing(self):
+  def lightSensing(self, que):
     while 1:
       data = GPIOlightRead()
       #we need to add mutex(the critical section is light_state)
@@ -137,28 +141,60 @@ class Root():
         self.light_state = 0
       time.sleep(3)
 
-  def temperSensing(self):
+  def temperSensing(self, que):
     while 1:
       data = GPIOtemperRead()
       #we ned to add mutex(the critical section is temper_state)
       self.temper_state = data
 
-    time.sleep(3)
+      time.sleep(3)
 
 
-  def humidSensing(self):
+  def humidSensing(self, que):
     while 1:
       data = GPIOhumidRead()
       #we need to add mutex(the criticla section is humid_state)
       self.humid_state = data
 
-    time.sleep(3)
+      time.sleep(3)
 
-  def magnetSensing(self):
+  def magnetSensing(self, que):
+    tempolight = ""
+    tempotemper = ""
+    tempowindow = ""
     while 1:
       self.magnet_state = GPIOmagnetRead()
-    time.sleep(3)
+      if self.distance_flag == 0 && self.magnet_state == 1: # enter the room
+        if self.prevention_Mode == 1:
+          # turn on the speaker
+          continue
 
+        self.human_num = self.human_num + 1
+        if self.human_num == 1:
+          tempolight = ""
+          tempotemper = ""
+          tempowindow = ""
+          # need to DB info
+          message = ""
+          que.append(message)
+      elif self.distance_flag == 1 && self.magnet_state == 1:
+        self.human_num = self.human_num - 1
+        tempolight = ""
+        tempotemper = ""
+        tempowindow = ""
+        if self.human_num == 0:
+          for i in total_num:
+            tempolight +='0'
+          #from DB get temper, window state and insert the message
+          messages = "put/%s/%s/%s" %(tempolight, , )
+
+
+  def infraredSensing(self, que):
+    while 1:
+      if GPIOtemperRead() < 50:
+        self.distance_flag = 1
+      else
+        self.distance_flag = 0
 
 
 
