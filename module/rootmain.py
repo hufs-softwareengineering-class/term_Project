@@ -19,6 +19,10 @@ if __name__ == "__main__":
   temperSensingThread = myThread(root, "temper")
   humidSensingThread = myThread(root, "humid")
   magnetSensingThread = myThread(root, "magnet")
+  lightSensingThread.start()
+  temperSensingThread.start()
+  humidSensingThread.start()
+  magnetSensingThread.start()
   root.makeDAG()
   
   #need to add the pipe module
