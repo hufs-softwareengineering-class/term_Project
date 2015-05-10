@@ -86,11 +86,7 @@ class Node():
   def get(self, dataparse, address):
     self.get_target = int(dataparse[1])
     if int(dataparse[1]) is self.number:
-      self.light_state = 1
-      self.temperature_state = 1
-      self.window_state = 1
-
-      message = "%s/%s/%d/%d/%d" %("getres","success",self.light_state,self.temperature_state, self.window_state)
+      message = "%s/%s/%d/%d/%d" %("getres","success",self.light_state,self.temperature_state, self.humid_state)
 
       clientmodule(message,self.dic_addr[self.parent[0]])
 
@@ -134,7 +130,7 @@ class Node():
 
       else:
         #send fail(getres) message to parent, because already check all child
-        message = "%s/%s" %(dataparse[0], dataparse[1])
+        message = "%s/%s/%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2], dataparse[3], dataparse[4])
         clientmodule(message, self.dic_addr[self.parent[0]])
         self.indexflag = 0
 
