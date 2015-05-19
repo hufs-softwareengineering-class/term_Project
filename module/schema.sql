@@ -2,6 +2,7 @@ create table light (
   room1 integer
   room2 integer
   room3 integer
+  room4 integer
   room5 integer
   room6 integer
   room7 integer
@@ -23,6 +24,7 @@ create table temperature (
   room1 integer
   room2 integer
   room3 integer
+  room4 integer
   room5 integer
   room6 integer
   room7 integer
@@ -44,6 +46,7 @@ create table humid (
   room1 integer
   room2 integer
   room3 integer
+  room4 integer
   room5 integer
   room6 integer
   room7 integer
