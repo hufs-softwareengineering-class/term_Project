@@ -73,4 +73,4 @@ create table if not exists standard_Setting(
 create table if not exists person_count(
   count integer
 
-  );
+);
