@@ -49,6 +49,9 @@ class Root():
   def __init__(self):
     self.addr=getaddr_rssi()
     self.number = 0
+    
+  def gettotalnum(self):
+    return self.total_num
 
   def setAutoMode(self):
     self.autoMode = 1

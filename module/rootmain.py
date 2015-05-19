@@ -1,7 +1,14 @@
 from Root import *
+import sqlite3
 import os, time, sys, Queue
 
-pipe_naem = "pipefile"
+sqlite_file = 'our_db.sqlite'    # name of the sqlite database file
+lighttable = 'light'
+tempertable = 'temper'
+humidtable = 'humid'
+usertemper_setting = 'setting'
+current_person = 'cur_person'
+pipe_name = "pipefile"
 Time = datetime.datetime.now()
 timeList = []
 
@@ -25,6 +32,39 @@ if __name__ == "__main__":
   humidSensingThread.start()
   magnetSensingThread.start()
   root.makeDAG()
+  
+  conn = sqlite3.connect(sqlite_file)
+  c = conn.cursor()
+
+  c.execute('CREATE TABLE {tn} ({nf} {ft})'\
+      .format(tn = lighttable, nf = "room1", ft="INTEGER"))
+  
+  c.execute('CREATE TABLE {tn} ({nf} {ft})'\
+      .format(tn = tempertable, nf = "room1", ft="INTEGER"))
+  
+  c.execute('CREATE TABLE {tn} ({nf} {ft})'\
+      .format(tn = humidtable, nf = "room1", ft="INTEGER"))
+  
+  c.execute('CREATE TABLE {tn} ({nf} {ft})'\
+      .format(tn = usertemper_setting, nf = "HIGH", ft="INTEGER"))
+  c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+      .format(tn = usertemper_setting, nf = "LOW", ft = "INTEGER"))
+  c.execute('CREATE TABLE {tn} ({nf} {ft})'\
+      .format(tn = current_person, nf = "sum", ft="INTEGER"))
+
+
+  for i in range(0, root.gettotalnum()-1):
+    roomnum = "room" + str(i+2)
+    c.execute('ATRER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+        .format(tn = lighttable, nf = roomnum, ft="INTEGER"))
+  
+    c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+        .format(tn = tempertable, nf = roomnum, ft="INTEGER"))
+  
+    c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+        .format(tn = humidtable, nf = roomnum, ft="INTEGER"))
+  
+
   
   #need to add the pipe module
   while 1:
