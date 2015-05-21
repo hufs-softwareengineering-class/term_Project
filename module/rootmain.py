@@ -18,6 +18,9 @@ if __name__ == "__main__":
     os.mkfifo(pipe_name)
 
   pipein = os.open(pipe_name, 'r')
+  conn = sqlite3.connect(sqlite_file)
+  c = conn.cursor()
+
 
   # Make Queeue
   queue = []
@@ -33,9 +36,6 @@ if __name__ == "__main__":
   magnetSensingThread.start()
   root.makeDAG()
   
-  conn = sqlite3.connect(sqlite_file)
-  c = conn.cursor()
-
   c.execute('CREATE TABLE {tn} ({nf} {ft})'\
       .format(tn = lighttable, nf = "room1", ft="INTEGER"))
   

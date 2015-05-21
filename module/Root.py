@@ -46,9 +46,10 @@ class Root():
   prevention_Mode = 0 
 
   #construcotr
-  def __init__(self):
+  def __init__(self, c):
     self.addr=getaddr_rssi()
     self.number = 0
+    self.cursor = c
     
   def gettotalnum(self):
     return self.total_num
@@ -94,7 +95,14 @@ class Root():
 
   def getData():
     print "child : ", self.child
-    
+    lightarr = []
+    temperarr = []
+    humidarr = []
+    for i in range(0, self.total_num):
+      lightarr.append(0)
+      temperarr.append(0)
+      humidarr.append(0)
+
     print "---------------get------------"
     num_index = 0
     while 1:
@@ -114,17 +122,29 @@ class Root():
         dataparse = data.split('/')
 
         if dataparse[1] == "success":
-          #need to fill 
-          #make algorithm
-          #transport light state of numindex to DB
-          
+          lightarr[num_index]=int(database[2])
+          temperarr[num_index]=int(database[3])
+          humidarr[num_index]=int(database[4])
           break
         #if dataparse[1] is fail, then send getMessage to  other chiled 
 
       num_index=num_index+1
     # after getting the humid & temper state, put   
+    lightquery = 'insert into lighttable values ('
+    temperquery = 'insert into tempertable values ('
+    humidquery = 'insert into humidtable values ('
+    endquery = ''
+    for i in range(0, self.total_num -1 ):
+      endquery += '?,'
+    endquery += '?)'
+    lightquery+= endquery
+    temperquery+= endquery
+    humidquery+= endquery
+    self.cursor.execute(lightquery, lightarr)
+    self.cursor.execute(temperquery, temperarr)
+    self.cursor.execute(humidquery, humidarr)
   
-  def putDate(self, message):
+  def putData(self, message):
     for i in self.child:
       clientmodule(message, self.dic_addr[i])
 
@@ -163,8 +183,6 @@ class Root():
 
   def magnetSensing(self, que):
     tempolight = ""
-    tempotemper = ""
-    tempowindow = ""
     while 1:
       self.magnet_state = GPIOmagnetRead()
       if self.distance_flag == 0 && self.magnet_state == 1: # enter the room
@@ -175,9 +193,10 @@ class Root():
         self.human_num = self.human_num + 1
         if self.human_num == 1:
           tempolight = ""
-          tempotemper = ""
-          tempowindow = ""
+          
           # need to DB info
+          
+          
           message = ""
           que.append(message)
       elif self.distance_flag == 1 && self.magnet_state == 1:
