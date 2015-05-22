@@ -200,15 +200,29 @@ class Root():
             prique.append([])
             for j in range(self.total_num):
               prique[i].append(0)
+          totalsum = 0
+          for i in range(self.total_num -1):
+            for j in range(i+1, self.total_num-1):
+           
+              query = "select count (*) from light where room%d == 1 and room%d == 1" %(i, j)
+              self.cursor.execute(query)
+              prique[i][j] = int(self.cursor.fetchone[0])
+              totalsum+= prique[i][j]
+          basenum = totalsum /(self.total_num*(self.total_num-1) /2)
+          temparr = []
+          for i in range(self.total_num):
+            temparr.append(0)
 
           for i in range(self.total_num -1):
             for j in range(i+1, self.total_num-1):
-              
-
-
+              if prique[i][j]>basenum:
+                temparr[i] = 1
+                temparr[j] = 1
+           
+          # tomorrow 
+          # db get oneline humid, temper
           
-          
-          message = ""
+          message = "put/%s/%s/%s"
           que.append(message)
       elif self.distance_flag == 1 && self.magnet_state == 1:
         self.human_num = self.human_num - 1
