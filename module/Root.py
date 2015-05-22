@@ -195,6 +195,17 @@ class Root():
           tempolight = ""
           
           # need to DB info
+          prique = []
+          for i in range(self.total_num):
+            prique.append([])
+            for j in range(self.total_num):
+              prique[i].append(0)
+
+          for i in range(self.total_num -1):
+            for j in range(i+1, self.total_num-1):
+              
+
+
           
           
           message = ""
