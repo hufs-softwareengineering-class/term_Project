@@ -221,19 +221,23 @@ class Root():
            
           # tomorrow 
           # db get oneline humid, temper
-          
-          message = "put/%s/%s/%s"
+          templight = ""
+          for i in temparr:
+            if i == 1:
+              templight += "1"
+            else:
+              templight += "0"
+
+          message = "put/%s/%s/%s" %(templight, "?", "?")
           que.append(message)
       elif self.distance_flag == 1 && self.magnet_state == 1:
         self.human_num = self.human_num - 1
         tempolight = ""
-        tempotemper = ""
-        tempowindow = ""
         if self.human_num == 0:
           for i in total_num:
             tempolight +='0'
           #from DB get temper, window state and insert the message
-          messages = "put/%s/%s/%s" %(tempolight, , )
+          messages = "put/%s/%s/%s" %(tempolight,"?" ,"?" )
 
 
   def infraredSensing(self, que):
