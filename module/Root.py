@@ -43,7 +43,7 @@ class Root():
   autoMode = 0 #initial autoMode bit zero
   human_num = 0
   distance_flag = 0 # if distance is less than 50, distance_flag 1
-  prevention_Mode = 0 
+  prevention_Mode = 0
 
   #construcotr
   def __init__(self, c):
@@ -93,7 +93,7 @@ class Root():
           self.search_index = self.search_index +1
 
 
-  def getData():
+  def getData(self, que):
     print "child : ", self.child
     lightarr = []
     temperarr = []
@@ -130,11 +130,17 @@ class Root():
 
       num_index=num_index+1
     # after getting the humid & temper state, put   
+    self.cursor.execute("SELECT ID FROM lighttable order by ID DESC limit 1")
+    result = int(self.cursor.fetchone()[0])
+    lightarr.insert(0, result+1)
+    temperarr.insert(0, result+1)
+    humidarr.insert(0, result+1)
+
     lightquery = 'insert into lighttable values ('
     temperquery = 'insert into tempertable values ('
     humidquery = 'insert into humidtable values ('
     endquery = ''
-    for i in range(0, self.total_num -1 ):
+    for i in range(0, self.total_num ):
       endquery += '?,'
     endquery += '?)'
     lightquery+= endquery
@@ -143,8 +149,35 @@ class Root():
     self.cursor.execute(lightquery, lightarr)
     self.cursor.execute(temperquery, temperarr)
     self.cursor.execute(humidquery, humidarr)
+
+    self.cursor.execute("SELECT *FROM usertemper_setting order by ID DESC limit 1")
+    result = self.cursor.fetchone()
+    base_high = result[1]
+    base_row = result[2]
+
+    tempTemper = ""
+    tempHumid = ""
+    
+    for i in range (0, self.total_num):
+      if tempearr[i] > base_high :
+        tempTemper += "1"
+      elif tempearr[i] < base_row :
+        tempTemper += "0"
+      else :
+        tempTemper += "-1"
+
+      if tempHumid[i] > 75:
+        tempHumid += "0"
+      else:
+        tempHumid += "1"
+
+
+    message = "put/%s/%s/%s" %("?", tempTemper, tempHumid)
   
   def putData(self, message):
+    dataparse = message.split('/')
+    print dataparse[1][0], dataparse[2][0], dataparse[3][0]
+    
     for i in self.child:
       clientmodule(message, self.dic_addr[i])
 
@@ -156,34 +189,52 @@ class Root():
 
   def lightSensing(self, que):
     while 1:
-      data = GPIOlightRead()
+      '''data = GPIOlightRead()
       #we need to add mutex(the critical section is light_state)
       if data >= 0.6:
         self.light_state = 1
       else:
+        self.light_state = 0'''
+
+      if self.light_state == 0:
+        self.light_state = 1
+      else:
         self.light_state = 0
+
       time.sleep(3)
 
   def temperSensing(self, que):
+    self.temper_state = 34
     while 1:
-      data = GPIOtemperRead()
+      '''data = GPIOtemperRead()
       #we ned to add mutex(the critical section is temper_state)
-      self.temper_state = data
+      self.temper_state = data'''
+
+      if self.temper_state == 34:
+        self.temper_state = 20
+      else:
+        self.temper_state = 34
 
       time.sleep(3)
 
 
   def humidSensing(self, que):
+    self.humid_state = 90
     while 1:
-      data = GPIOhumidRead()
+      '''data = GPIOhumidRead()
       #we need to add mutex(the criticla section is humid_state)
-      self.humid_state = data
+      self.humid_state = data'''
+
+      if self.temper_state == 90:
+        self.temper_state = 30
+      else:
+        self.temper_state = 90
 
       time.sleep(3)
 
   def magnetSensing(self, que):
     tempolight = ""
-    while 1:
+    '''while 1:
       self.magnet_state = GPIOmagnetRead()
       if self.distance_flag == 0 && self.magnet_state == 1: # enter the room
         if self.prevention_Mode == 1:
@@ -238,16 +289,18 @@ class Root():
             tempolight +='0'
           #from DB get temper, window state and insert the message
           messages = "put/%s/%s/%s" %(tempolight,"?" ,"?" )
-
+'''
+    self.magnet_state = 0
 
   def infraredSensing(self, que):
-    while 1:
+    self.distance_flag = 0
+    '''while 1:
       if GPIOtemperRead() < 50:
         self.distance_flag = 1
       else
         self.distance_flag = 0
 
-
+'''
 
   
 
