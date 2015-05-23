@@ -137,26 +137,27 @@ class Node():
 
   def put(self, dataparse, address):
     # if state == -1, then current state maintain
-    if dataparse[1][self.number] is "1":
-      #turn on the light
-    elif dataparse[1][self.number] is "0":
-      #turn off the light
+    if dataparse[1] != "?":
+      if dataparse[1][self.number] is "1":
+        #turn on the light
+      elif dataparse[1][self.number] is "0":
+        #turn off the light
     # temperature state = {-1(unchange), 0(up temperature), 1(down temperature)}
-    elif dataparse[2][self.number] is "0":
-      #turn on the temperature light blue
+    if dataparse[2] != "?":
+      if dataparse[2][self.number] is "0":
+        #turn on the temperature light blue
 
-    elif dataparse[2][self.number] is "1":
-      #turn on the temperature light red
+      elif dataparse[2][self.number] is "1":
+        #turn on the temperature light red
 
-    elif dataparse[3][self.number] is "1":
-      #open the window
-    elif dataparse[3][self.number] is "0":
-      #close the window
-    elif dataparse[4][self.number] is "1":
-      #ring the alarm
+    if dataparse[3] != "?":
+      if dataparse[3][self.number] is "1":
+        #open the window
+      elif dataparse[3][self.number] is "0":
+        #close the window
 
     
-    message = "%s/%s/%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2], dataparse[3], dataparse[4])
+    message = "%s/%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2], dataparse[3])
     
     for i in child:
       clientmodule(message, dic_addr[i])
