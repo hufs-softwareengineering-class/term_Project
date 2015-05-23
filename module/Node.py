@@ -11,7 +11,7 @@ import GPIOhumidread
 
 class myThread(threading.Thread):
   def __init__(self, node, sensingType):
-    super.__init__(self)
+    threading.Thread.__init__(self)
     self.node = node
     self.sensingType = sensingType
     self.dictionary = {

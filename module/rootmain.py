@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
   # Make Queeue
   queue = []
-  root = Root()
+  root = Root(c)
   lightSensingThread = myThread(root, "light", queue)
   temperSensingThread = myThread(root, "temper", queue)
   humidSensingThread = myThread(root, "humid", queue)
@@ -37,24 +37,41 @@ if __name__ == "__main__":
   root.makeDAG()
   
   c.execute('CREATE TABLE {tn} ({nf} {ft})'\
-      .format(tn = lighttable, nf = "room1", ft="INTEGER"))
+      .format(tn = lighttable, nf = "ID", ft="INTEGER"))
   
   c.execute('CREATE TABLE {tn} ({nf} {ft})'\
-      .format(tn = tempertable, nf = "room1", ft="INTEGER"))
+      .format(tn = tempertable, nf = "ID", ft="INTEGER"))
   
   c.execute('CREATE TABLE {tn} ({nf} {ft})'\
-      .format(tn = humidtable, nf = "room1", ft="INTEGER"))
+      .format(tn = humidtable, nf = "ID", ft="INTEGER"))
   
+  #intialize the temeperr setting
   c.execute('CREATE TABLE {tn} ({nf} {ft})'\
-      .format(tn = usertemper_setting, nf = "HIGH", ft="INTEGER"))
+      .format(tn = usertemper_setting, nf = "ID", ft="INTEGER"))
+  c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+      .format(tn = usertemper_setting, nf = "HIGH", ft = "INTEGER"))
   c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
       .format(tn = usertemper_setting, nf = "LOW", ft = "INTEGER"))
+  c.execute("insert into usertemper_setting values (?,?,?)", [1, 18, 28])
+
   c.execute('CREATE TABLE {tn} ({nf} {ft})'\
+      .format(tn = current_person, nf = "ID", ft="INTEGER"))
+
+  c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
       .format(tn = current_person, nf = "sum", ft="INTEGER"))
+  c.execute('insert into current_person values (?,?)', [1, 0])
 
+  for i in range(0, root.gettotalnum()):
+    roomnum = "room" + str(i+1)
+    c.execute('ATRER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+        .format(tn = lighttable, nf = roomnum, ft="INTEGER"))
+  
+    c.execute('ALTER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
+        .format(tn = tempertable, nf = roomnum, ft="INTEGER"))
+  
 
-  for i in range(0, root.gettotalnum()-1):
-    roomnum = "room" + str(i+2)
+  for i in range(0, root.gettotalnum()):
+    roomnum = "room" + str(i+1)
     c.execute('ATRER TABLE {tn} ADD CLOUMN ({nf} {ft})'\
         .format(tn = lighttable, nf = roomnum, ft="INTEGER"))
   
