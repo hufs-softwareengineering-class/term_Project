@@ -7,10 +7,10 @@ import time
 import datetime
 import Queue
 import threading
-import GPIOlightread
-import GPIOtemperread
-import GPIOhumidread
-import GPIOmagnetread
+from GPIOlightread import *
+from GPIOtemperread import *
+from GPIOhumidread import *
+from GPIOmagnetread import *
 
 class myThread(threading.Thread):
   def __init__(self, node, sensingType, que):
@@ -19,11 +19,11 @@ class myThread(threading.Thread):
     self.sensingType = sensingType
     self.que = que
     self.dictionary = {
-        "light" : node.lightSensing,
-        "temper" : node.temperSensing,
-        "humid" : node.humidSensing,
-        "magnet" : node.magnetSensing,
-        "infrared" : node.infraredSensing,
+        "light" : self.node.lightSensing,
+        "temper" : self.node.temperSensing,
+        "humid" : self.node.humidSensing,
+        "magnet" : self.node.magnetSensing,
+        "infrared" : self.node.infraredSensing,
         }
 
   def run(self):

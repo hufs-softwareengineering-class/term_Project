@@ -5,9 +5,9 @@ from servermodule import *
 import sys
 import time
 import threading
-import GPIOlightread
-import GPIOtemperread
-import GPIOhumidread
+from GPIOlightread import *
+from GPIOtemperread import *
+from GPIOhumidread import *
 
 class myThread(threading.Thread):
   def __init__(self, node, sensingType):
@@ -15,9 +15,9 @@ class myThread(threading.Thread):
     self.node = node
     self.sensingType = sensingType
     self.dictionary = {
-        "light" : node.lightSensing,
-        "temper" : node.temperSensing,
-        "humid" : node.humidSensing, 
+        "light" : self.node.lightSensing,
+        "temper" : self.node.temperSensing,
+        "humid" : self.node.humidSensing, 
         }
 
   def run(self):
