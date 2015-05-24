@@ -44,7 +44,7 @@ class Node():
     self.addr = getaddr_rssi()
 
   def search(self, dataparse, address):
-    if len(parent) is not 0:
+    if len(self.parent) is not 0:
       response = "searchres/%s" %(dataparse[1])
       clientmodule(response, address)
     else:
