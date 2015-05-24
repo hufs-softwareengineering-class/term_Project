@@ -6,7 +6,7 @@ import sys
 import time
 import threading
 from GPIOlightread import *
-from GPIOlightread import *
+from GPIOtemperread import *
 from GPIOhumidread import *
 
 class myThread(threading.Thread):
