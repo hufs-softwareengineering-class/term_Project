@@ -28,5 +28,5 @@ if __name__ == "__main__":
     dataparse = data.split('/')
     schema = dataparse[0]
     address = dataparse[len(dataparse)-1]
-    node.schemas[schema](dataparse, address)
+    schemas[schema](dataparse, address)
 
