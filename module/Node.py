@@ -15,9 +15,9 @@ class myThread(threading.Thread):
     self.node = node
     self.sensingType = sensingType
     self.dictionary = {
-        "light" : lightSensing,
-        "temper" : temperSensing,
-        "humid" : humidSensing, 
+        "light" : self.node.lightSensing,
+        "temper" : self.node.temperSensing,
+        "humid" : self.node.humidSensing, 
         }
 
   def run(self):
