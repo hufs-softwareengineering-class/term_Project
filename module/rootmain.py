@@ -17,23 +17,32 @@ if __name__ == "__main__":
   if not os.path.exists(pipe_name):
     os.mkfifo(pipe_name)
 
-  pipein = os.open(pipe_name, 'r')
+  print "hello"
+  pipein = open(pipe_name, 'r')
+  print "hello"
   conn = sqlite3.connect(sqlite_file)
   c = conn.cursor()
 
+  print "hello"
 
   # Make Queeue
   queue = []
   root = Root(c)
+<<<<<<< HEAD
+=======
+  print "hello"
+>>>>>>> 1544e3edbb8b12fe0417b0e9c56ffb893b8531ad
   lightSensingThread = myThread(root, "light", queue)
   temperSensingThread = myThread(root, "temper", queue)
   humidSensingThread = myThread(root, "humid", queue)
   magnetSensingThread = myThread(root, "magnet", queue)
   infraredSensingThread = myThread(root, "infrared", queue)
+  print "hello"
   lightSensingThread.start()
   temperSensingThread.start()
   humidSensingThread.start()
   magnetSensingThread.start()
+  print "hello"
   root.makeDAG()
   
   c.execute('CREATE TABLE {tn} ({nf} {ft})'\
@@ -90,13 +99,13 @@ if __name__ == "__main__":
       #need to parsing the json and make meassage , then enqueue the message to the queue
       #need to parsing the mode 
       if schema == "prevenmode":
-        prevalue = #parsing the json 
+        prevalue = 0#parsing the json 
         root.setPrevention(prevalue)
         continue
-      message = #parisng the jsonand make the message (need to access the DB data) 
+      message = 0#parisng the jsonand make the message (need to access the DB data) 
       queue.append(message)
 
-    else if queue.len() == 0: #need to modify
+    elif queue.len() == 0: #need to modify
       root.getData()
     else :
       text = queue.pop()

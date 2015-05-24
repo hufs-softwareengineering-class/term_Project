@@ -16,3 +16,6 @@ def servermodule ():
   print("Data received:", data)
   recive = "%s/%s" %(data, str(address[0]))
   return recive
+
+if __name__ == "__main__":
+    servermodule()

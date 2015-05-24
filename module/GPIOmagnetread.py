@@ -1,5 +1,5 @@
 
-import Adafuit_BBIO.ADC as ADC
+import Adafruit_BBIO.ADC as ADC
 
 def GPIOmagnetRead():
   ADC.setup() 
