@@ -15,9 +15,9 @@ class myThread(threading.Thread):
     self.node = node
     self.sensingType = sensingType
     self.dictionary = {
-        "light" : lightSensing,
-        "temper" : temperSensing,
-        "humid" : humidSensing, 
+        "light" : node.lightSensing,
+        "temper" : node.temperSensing,
+        "humid" : node.humidSensing, 
         }
 
   def run(self):
@@ -139,21 +139,27 @@ class Node():
     # if state == -1, then current state maintain
     if dataparse[1] != "?":
       if dataparse[1][self.number] is "1":
+        data = 0
         #turn on the light
       elif dataparse[1][self.number] is "0":
+        data = 0
         #turn off the light
     # temperature state = {-1(unchange), 0(up temperature), 1(down temperature)}
     if dataparse[2] != "?":
       if dataparse[2][self.number] is "0":
+        data = 0
         #turn on the temperature light blue
 
       elif dataparse[2][self.number] is "1":
+        data = 0
         #turn on the temperature light red
 
     if dataparse[3] != "?":
       if dataparse[3][self.number] is "1":
+        data = 0
         #open the window
       elif dataparse[3][self.number] is "0":
+        data = 0
         #close the window
 
     
