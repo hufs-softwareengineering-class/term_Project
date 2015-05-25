@@ -91,27 +91,14 @@ def teardown_request(exception):
 
 
 @app.route('/')
-def timeline():
-    """Shows a users timeline or if no user is logged in it will
-    redirect to the public timeline.  This timeline shows the user's
-    messages as well as all the messages of followed users.
-    """
-    if not g.user:
-        return redirect(url_for('public_timeline'))
-    return render_template('timeline.html', messages=query_db('''
-        select message.*, user.* from message, user
-        where message.author_id = user.user_id and (
-            user.user_id = ? or
-            user.user_id in (select whom_id from follower
-                                    where who_id = ?))
-        order by message.pub_date desc limit ?''',
-        [session['user_id'], session['user_id'], PER_PAGE]))
-
+def home():
+	error = None
+	return render_template('home.html', error = error)
 
 @app.route('/public')
 def public_timeline():
     """Displays the latest messages of all users."""
-    return render_template('timeline.html', messages=query_db('''
+    return render_template('test.html', messages=query_db('''
         select message.*, user.* from message, user
         where message.author_id = user.user_id
         order by message.pub_date desc limit ?''', [PER_PAGE]))
@@ -130,13 +117,7 @@ def user_timeline(username):
             follower.who_id = ? and follower.whom_id = ?''',
             [session['user_id'], profile_user['user_id']],
             one=True) is not None
-    return render_template('timeline.html', messages=query_db('''
-            select message.*, user.* from message, user where
-            user.user_id = message.author_id and user.user_id = ?
-            order by message.pub_date desc limit ?''',
-            [profile_user['user_id'], PER_PAGE]), followed=followed,
-            profile_user=profile_user)
-
+    return render_template('test.html')
 
 @app.route('/<username>/follow')
 def follow_user(username):
@@ -188,7 +169,7 @@ def add_message():
 def login():
     """Logs the user in."""
     if g.user:
-        return redirect(url_for('timeline'))
+        return redirect(url_for('test'))
     error = None
     if request.method == 'POST':
         user = query_db('''select * from user where
@@ -201,15 +182,20 @@ def login():
         else:
             flash('You were logged in')
             session['user_id'] = user['user_id']
-            return redirect(url_for('timeline'))
+            return redirect(url_for('test'))
     return render_template('login.html', error=error)
 
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+	"""test GPIO"""
+	error = None
+	return render_template('test.html', error=error)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """Registers the user."""
     if g.user:
-        return redirect(url_for('timeline'))
+        return redirect(url_for('test'))
     error = None
     if request.method == 'POST':
         if not request.form['username']:
