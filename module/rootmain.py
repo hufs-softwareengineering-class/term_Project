@@ -63,14 +63,6 @@ if __name__ == "__main__":
       .format(tn = current_person, nf = "sum", ft="INTEGER"))
   c.execute('insert into cur_person values (?,?)', [1, 0])
 
-  for i in range(0, root.gettotalnum()):
-    roomnum = "room" + str(i+1)
-    c.execute("ALTER TABLE {tn} ADD CLOUMN '{nf}' {ft}"\
-        .format(tn = lighttable, nf = roomnum, ft="INTEGER"))
-  
-    c.execute("ALTER TABLE {tn} ADD CLOUMN '{nf}' {ft}"\
-        .format(tn = tempertable, nf = roomnum, ft="INTEGER"))
-  
 
   for i in range(0, root.gettotalnum()):
     roomnum = "room" + str(i+1)
@@ -87,15 +79,15 @@ if __name__ == "__main__":
   
   #need to add the pipe module
   while 1:
-    if ~pipein.empty(): # need to modify
-      line = pipein.readline()[:-1]
+    line = pipein.readline()[:-1]
+    if line!="": # need to modify
       #need to parsing the json and make meassage , then enqueue the message to the queue
       #need to parsing the mode 
       if schema == "prevenmode":
         prevalue = #parsing the json 
         root.setPrevention(prevalue)
         continue
-      message = #parisng the jsonand make the message (need to access the DB data) 
+      message = 0 #parisng the jsonand make the message (need to access the DB data) 
       queue.append(message)
 
     else if queue.len() == 0: #need to modify

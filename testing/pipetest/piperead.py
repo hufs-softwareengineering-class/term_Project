@@ -5,10 +5,11 @@ if not os.path.exists(pipe_name):
 
 pipein = open(pipe_name, 'r')
 print "hello"
-'''
 while True:
-  line = pipein.readline()
+  line = pipein.readline()[:-1]
+  if line == "":
+    print "nothing"
+    time.sleep(3)
   print "pipe got %s at %s " %(line, time.time())
-'''
 
 
