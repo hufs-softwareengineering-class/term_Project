@@ -25,6 +25,7 @@ if __name__ == "__main__":
   # Make Queeue
   queue = []
   root = Root(c)
+  '''
   lightSensingThread = myThread(root, "light", queue)
   temperSensingThread = myThread(root, "temper", queue)
   humidSensingThread = myThread(root, "humid", queue)
@@ -34,6 +35,7 @@ if __name__ == "__main__":
   temperSensingThread.start()
   humidSensingThread.start()
   magnetSensingThread.start()
+  '''
   root.makeDAG()
   
   c.execute('CREATE TABLE {tn} ({nf} {ft})'\

@@ -16,13 +16,14 @@ schemas = {
     }
 
 if __name__ == "__main__":
+  '''
   lightSensingThread = myThread(node, "light")
   temperSensingThread = myThread(node, "temper")
   humidSensingThread = myThread(node, "humid")
   lightSensingThread.start()
   temperSensingThread.start()
   humidSensingThread.start()
-
+'''
   while 1:
     data = servermodule()
     dataparse = data.split('/')
