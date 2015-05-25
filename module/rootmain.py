@@ -76,7 +76,19 @@ if __name__ == "__main__":
   
     c.execute("ALTER TABLE {tn} ADD COLUMN '{nf}' {ft}"\
         .format(tn = humidtable, nf = roomnum, ft="INTEGER"))
-  
+  num = "" 
+  baselist = []
+  for i in range(0, root.gettotalnum()):
+    num+="?,"
+    baselist.append(0)
+  baselist.append(0)
+  num+="?)"
+  lightquery = "insert into light values("+num
+  temperquery = "insert into temper values("+num
+  humidquery = "insert into humid values("+num
+  c.execute(lightquery, baselist)
+  c.execute(temperquery, baselist)
+  c.execute(humidquery, baselist)
 
   
   #need to add the pipe module

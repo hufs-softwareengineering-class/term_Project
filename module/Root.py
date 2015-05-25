@@ -161,14 +161,14 @@ class Root():
     tempHumid = ""
     
     for i in range (0, self.total_num):
-      if tempearr[i] > base_high :
+      if temperarr[i] > base_high :
         tempTemper += "1"
-      elif tempearr[i] < base_row :
+      elif temperarr[i] < base_row :
         tempTemper += "0"
       else :
         tempTemper += "-1"
 
-      if tempHumid[i] > 75:
+      if humidarr[i] > 75:
         tempHumid += "0"
       else:
         tempHumid += "1"
