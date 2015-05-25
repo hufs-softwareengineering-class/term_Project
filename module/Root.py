@@ -86,7 +86,7 @@ class Root():
           self.count = int(dataparse[1])
 
         if self.search_index is len(self.addr):
-          self.total_num = int(dataparse[1])
+          self.total_num = int(dataparse[1]) + 1
           break
         else:
           message = "search/%d/%d" %(int(dataparse[1]), self.number)
@@ -105,6 +105,7 @@ class Root():
       humidarr.append(0)
 
     print "---------------get------------"
+    print "total num ", self.total_num
     num_index = 0
     while 1:
       if num_index == self.total_num + 1:
@@ -123,9 +124,9 @@ class Root():
         dataparse = data.split('/')
 
         if dataparse[1] == "success":
-          lightarr[num_index]=int(database[2])
-          temperarr[num_index]=int(database[3])
-          humidarr[num_index]=int(database[4])
+          lightarr[num_index]=int(dataparse[2])
+          temperarr[num_index]=int(dataparse[3])
+          humidarr[num_index]=int(dataparse[4])
           break
         #if dataparse[1] is fail, then send getMessage to  other chiled 
 
@@ -160,9 +161,9 @@ class Root():
     tempHumid = ""
     
     for i in range (0, self.total_num):
-      if tempearr[i] > base_high :
+      if temperarr[i] > base_high :
         tempTemper += "1"
-      elif tempearr[i] < base_row :
+      elif temperarr[i] < base_row :
         tempTemper += "0"
       else :
         tempTemper += "-1"
@@ -174,6 +175,7 @@ class Root():
 
 
     message = "put/%s/%s/%s" %("?", tempTemper, tempHumid)
+    que.append(message)
   
   def putData(self, message):
     dataparse = message.split('/')
