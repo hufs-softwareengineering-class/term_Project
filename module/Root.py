@@ -117,9 +117,14 @@ class Root():
         
       child_num = 0
       while 1:
-        message = "%s/%d" %("get", num_index)
-        clientmodule(message, self.dic_addr[self.child[child_num]])
-        child_num= child_num +1
+        if num_index in self.child:
+          message = "%s/%d" %("get", num_index)
+          child_num = self.child.index(num_index)
+          clientmodule(message, self.dic_addr[self.child[child_num]])
+        else :
+          message = "%s/%d" %("get", num_index)
+          clientmodule(message, self.dic_addr[self.child[child_num]])
+          child_num= child_num +1
         data = servermodule()
         dataparse = data.split('/')
 
