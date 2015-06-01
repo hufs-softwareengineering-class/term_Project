@@ -108,7 +108,7 @@ class Root():
     print "total num ", self.total_num
     num_index = 0
     while 1:
-      if num_index == self.total_num + 1:
+      if num_index == self.total_num:
         break
       if num_index == self.number:
         #get the state of root's light & temperature...
