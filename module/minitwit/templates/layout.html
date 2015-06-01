@@ -7,7 +7,7 @@
   {% if g.user %}
     <a href="{{ url_for('logout') }}">sign out [{{ g.user.username }}]</a> | 
 	<a href="{{ url_for('test') }}">Current State</a> | 
-	<a href="{{ url_for('test') }}">Automatic Mode</a> | 
+	<a href="{{ url_for('Automatic') }}">Automatic Mode</a> | 
 	<a href="{{ url_for('test') }}">Manual Mode</a> | 
   {% else %}
     <a href="{{ url_for('home') }}">Home</a> |
