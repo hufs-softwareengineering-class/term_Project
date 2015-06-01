@@ -104,7 +104,7 @@ if __name__ == "__main__":
       queue.append(message)
 
     elif len(queue) == 0: #need to modify
-      root.getData()
+      root.getData(queue)
     else :
       text = queue.pop()
       root.putData(text)
