@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-    MiniTwit
-    ~~~~~~~~
 
-    A microblogging application written with Flask and sqlite3.
-
-    :copyright: (c) 2010 by Armin Ronacher.
-    :license: BSD, see LICENSE for more details.
-"""
 from __future__ import with_statement
 import time
 from sqlite3 import dbapi2 as sqlite3
@@ -18,7 +10,7 @@ from flask import Flask, request, session, url_for, redirect, \
      render_template, abort, g, flash
 from werkzeug.security import check_password_hash, generate_password_hash
 
-
+#DB 설정 부분...추후 수정요
 # configuration
 DATABASE = './minitwit.db'
 PER_PAGE = 30
@@ -28,7 +20,7 @@ SECRET_KEY = 'development key'
 # create our little application :)
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config.from_envvar('MINITWIT_SETTINGS', silent=True)
+app.config.from_envvar('HOME_MANAGEMENT', silent=True)
 
 
 def connect_db():
@@ -52,18 +44,19 @@ def query_db(query, args=(), one=False):
     return (rv[0] if rv else None) if one else rv
 
 
+#??????
 def get_user_id(username):
     """Convenience method to look up the id for a username."""
     rv = g.db.execute('select user_id from user where username = ?',
                        [username]).fetchone()
     return rv[0] if rv else None
 
-
+#TIME STAMP
 def format_datetime(timestamp):
     """Format a timestamp for display."""
     return datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d @ %H:%M')
 
-
+#필요한가??
 def gravatar_url(email, size=80):
     """Return the gravatar image for the given email address."""
     return 'http://www.gravatar.com/avatar/%s?d=identicon&s=%d' % \
@@ -95,6 +88,7 @@ def home():
 	error = None
 	return render_template('home.html', error = error)
 
+#없애기
 @app.route('/public')
 def public_timeline():
     """Displays the latest messages of all users."""
@@ -103,7 +97,9 @@ def public_timeline():
         where message.author_id = user.user_id
         order by message.pub_date desc limit ?''', [PER_PAGE]))
 
-
+#우리는 로그인을 해야만 관리 페이지에 들어갈 수 있음
+#기본은 자동모드?
+#로그인을 하면 뜨는 페이지!
 @app.route('/<username>')
 def user_timeline(username):
     """Display's a users tweets."""
@@ -119,6 +115,7 @@ def user_timeline(username):
             one=True) is not None
     return render_template('test.html')
 
+#Follow가 아니라 수정모드로 바꾸면 될듯
 @app.route('/<username>/follow')
 def follow_user(username):
     """Adds the current user as follower of the given user."""
@@ -133,7 +130,7 @@ def follow_user(username):
     flash('You are now following "%s"' % username)
     return redirect(url_for('user_timeline', username=username))
 
-
+#자동 모드로 !
 @app.route('/<username>/unfollow')
 def unfollow_user(username):
     """Removes the current user as follower of the given user."""
@@ -148,7 +145,7 @@ def unfollow_user(username):
     flash('You are no longer following "%s"' % username)
     return redirect(url_for('user_timeline', username=username))
 
-
+#POST가 필요함???없애도 될듯
 @app.route('/add_message', methods=['POST'])
 def add_message():
     """Registers a new message for the user."""
@@ -164,7 +161,7 @@ def add_message():
         flash('Your message was recorded')
     return redirect(url_for('timeline'))
 
-
+#로그인 -> 디비에서 값 가져오는거 분석해서 센서 값들 가져오기
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """Logs the user in."""
@@ -185,11 +182,13 @@ def login():
             return redirect(url_for('test'))
     return render_template('login.html', error=error)
 
+#자동 관리 페이지로 만들어보기//포스트는 필요없을듯
 @app.route('/test', methods=['GET', 'POST'])
 def test():
 	"""test GPIO"""
 	error = None
 	return render_template('test.html', error=error)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -225,7 +224,7 @@ def logout():
     """Logs the user out."""
     flash('You were logged out')
     session.pop('user_id', None)
-    return redirect(url_for('public_timeline'))
+    return redirect(url_for('home'))
 
 
 # add some filters to jinja
