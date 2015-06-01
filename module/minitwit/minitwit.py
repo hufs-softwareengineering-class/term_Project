@@ -115,6 +115,12 @@ def user_timeline(username):
             one=True) is not None
     return render_template('test.html')
 
+@app.route('/Automatic')
+def Automatic():
+	"""test GPIO"""
+	error = None
+	return render_template('Automatic.html', error=error)
+
 #Follow가 아니라 수정모드로 바꾸면 될듯
 @app.route('/<username>/follow')
 def follow_user(username):
