@@ -137,7 +137,7 @@ class Root():
 
       num_index=num_index+1
     # after getting the humid & temper state, put   
-    self.cursor.execute("SELECT ID FROM lighttable order by ID DESC limit 1")
+    self.cursor.execute("SELECT ID FROM light order by ID DESC limit 1")
     result = int(self.cursor.fetchone()[0])
     lightarr.insert(0, result+1)
     temperarr.insert(0, result+1)
