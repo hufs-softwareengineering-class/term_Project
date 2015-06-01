@@ -18,7 +18,7 @@ if __name__ == "__main__":
   if not os.path.exists(pipe_name):
     os.mkfifo(pipe_name)
 
-  pipein = os.open(pipe_name, 'r')
+  pipein = open(pipe_name, 'r')
   conn = sqlite3.connect(sqlite_file)
   c = conn.cursor()
 
@@ -97,13 +97,13 @@ if __name__ == "__main__":
       #need to parsing the json and make meassage , then enqueue the message to the queue
       #need to parsing the mode 
       if schema == "prevenmode":
-        prevalue = #parsing the json 
-        root.setPrevention(prevalue)
+        #prevalue = #parsing the json 
+        #root.setPrevention(prevalue)
         continue
       message = 0 #parisng the jsonand make the message (need to access the DB data) 
       queue.append(message)
 
-    else if len(queue) == 0: #need to modify
+    elif len(queue) == 0: #need to modify
       root.getData()
     else :
       text = queue.pop()
