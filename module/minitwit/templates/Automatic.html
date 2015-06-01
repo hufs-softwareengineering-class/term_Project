@@ -2,4 +2,22 @@
 {% block title %}Automatic Mode{% endblock %}
 {% block body %}
 <h2>Automatic Mode</h2>
-{% if error %}<div class=error><strong>Error:</strong>
+{% if error %}<div class=error><strong>Error:</strong> {{ error }}</div>{% endif %}
+<form action="" method=post>
+	<table>
+		<tbody>
+			<tr>
+				<th>현재 집안의 인원 :&nbsp; &nbsp;
+					<td> 3{{ people_num }} 명&nbsp; &nbsp;
+			</tr>
+			<tr>
+				<td>&nbsp; &nbsp;
+			</tr>
+			<tr>
+				<th>침입자 감지 모드 :&nbsp; &nbsp;
+					<td> {{ inve }} ON
+			</tr>
+		</tbody>
+	</table>
+</form>
+{% endblock %}
