@@ -5,14 +5,14 @@
   <h1>Home Management System</h1>
   <div class=navigation>
   {% if g.user %}
-    <a href="{{ url_for('timeline') }}">my timeline</a> |
-    <a href="{{ url_for('public_timeline') }}">public timeline</a> |
-    <a href="{{ url_for('logout') }}">sign out [{{ g.user.username }}]</a>
+    <a href="{{ url_for('logout') }}">sign out [{{ g.user.username }}]</a> | 
+	<a href="{{ url_for('test') }}">Current State</a> | 
+	<a href="{{ url_for('test') }}">Automatic Mode</a> | 
+	<a href="{{ url_for('test') }}">Manual Mode</a> | 
   {% else %}
     <a href="{{ url_for('home') }}">Home</a> |
     <a href="{{ url_for('register') }}">sign up</a> |
 	<a href="{{ url_for('login') }}">sign in</a> |
-	<a href="{{ url_for('test') }}">test GPIO</a>
   {% endif %}
   </div>
   {% with flashes = get_flashed_messages() %}
