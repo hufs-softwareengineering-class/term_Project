@@ -1,15 +1,34 @@
 {% extends "layout.html" %}
 {% block title %}Current State{% endblock %}
 {% block body %}
-  <h2>Current State</h2>
-  {% if error %}<div class=error><strong>Error:</strong> {{ error }}</div>{% endif %}
-  <form action="" method=post>
-    <dl>
-      <dt>Username:
-      <dd><input type=text name=username size=30 value="{{ request.form.username }}">
-      <dt>Password:
-      <dd><input type=password name=password size=30>
-    </dl>
-    <div class=actions><input type=submit value="Sign In"></div>
-  </form>
+<h2>Current State</h2>
+{% if error %}<div class=error><strong>Error:</strong> {{ error }}</div>{% endif %}
+<form action="" method=post>
+	<table>
+		<tbody>
+			<tr>
+				<th>Room 1
+					<td> Light : ON {{ light }} /
+					<td> Temp : 22 {{ temp }} 도 /
+					<td> Humid : 45 {{ humid }} %		 
+					<td>   |   
+				<th>Room 2
+					<td> Light : OFF{{ light2 }} /
+					<td> Temp : 21{{ temp2 }} 도 /
+					<td> humid : 46{{ humid2 }} %
+			</tr>
+			<tr>
+				<th>Room 3 
+					<td> Light : ON{{ light }} /
+					<td> Temp : 23{{ temp }} 도 /
+					<td> Humid : 46{{ humid }} %		 
+					<td>   |   
+				<th>Room 4 
+					<td> Light : ON{{ light }} /
+					<td> Temp : 23{{ temp }} 도 /
+					<td> Humid : 45{{ humid }} %		 
+			</tr>
+		</tbody>
+	</table>
+</form>
 {% endblock %}
