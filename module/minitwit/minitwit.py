@@ -9,6 +9,7 @@ from contextlib import closing
 from flask import Flask, request, session, url_for, redirect, \
      render_template, abort, g, flash
 from werkzeug.security import check_password_hash, generate_password_hash
+#import Adafruit_BBIO.GPIO as GPIO
 
 #DB 설정 부분...추후 수정요
 # configuration
@@ -17,6 +18,17 @@ PER_PAGE = 30
 DEBUG = True
 SECRET_KEY = 'development key'
 
+#LED name and GPIO number
+#key is 'RoomNum' -> how to send a message to bb?
+#받으려는 비글본에 GPIO 설정이 되어있어야함
+#GPIO의 ' ' 삭제해서 사용
+#포트 설정은 단순한 임시값. 방 번호로 지정해서 메세지 보내기?
+leds = {
+	'Room1' : {'name' : 'led1', 'state' : 'GPIO.LOW'},
+	'Room2' : {'name' : 'led2', 'state' : 1},
+	'Room3' : {'name' : 'led3', 'state' : 'GPIO.LOW'},
+	'Room4' : {'name' : 'led4', 'state' : 'GPIO.LOW'}
+	}
 # create our little application :)
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -100,6 +112,7 @@ def public_timeline():
 #우리는 로그인을 해야만 관리 페이지에 들어갈 수 있음
 #기본은 자동모드?
 #로그인을 하면 뜨는 페이지!
+#test.html -> current state
 @app.route('/<username>')
 def user_timeline(username):
     """Display's a users tweets."""
@@ -120,6 +133,22 @@ def Automatic():
 	"""test GPIO"""
 	error = None
 	return render_template('Automatic.html', error=error)
+
+@app.route('/Manual')
+def Manual():
+#	"""test GPIO"""
+	#error = None
+	return render_template('Manual.html', leds=leds)
+
+#LED ON/OFF 버튼 누릴때 실행되는 부분
+#LED state : GPIO.input("P8_10")
+@app.route('/<led>/<act>')
+def action(led, act):
+	#비글본에 메세지 전달?
+	error = None
+	if act == "on":
+		print "clicked ON"
+	return render_template('Manual.html', error=error)
 
 #Follow가 아니라 수정모드로 바꾸면 될듯
 @app.route('/<username>/follow')
