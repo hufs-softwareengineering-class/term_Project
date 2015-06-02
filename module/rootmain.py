@@ -24,6 +24,7 @@ if __name__ == "__main__":
 
 
   # Make Queeue
+  que = Queue()
   queue = []
   root = Root(c)
   '''
@@ -89,10 +90,17 @@ if __name__ == "__main__":
   c.execute(temperquery, baselist)
   c.execute(humidquery, baselist)
 
-  
+  p = Process(target = magnetSensin, args(que,))
+  p.start()
   #need to add the pipe module
   while 1:
     line = pipein.readline()[:-1]
+    magmessage = ""
+    magmessage = que.get(timeout = 1)
+    if magmessage =="":
+      pass
+    else :
+      queue.append(magmessage)
     if line!="": # need to modify
       #need to parsing the json and make meassage , then enqueue the message to the queue
       #need to parsing the mode 
@@ -106,6 +114,7 @@ if __name__ == "__main__":
     elif len(queue) == 0: #need to modify
       root.getData(queue)
     else :
+      
       text = queue.pop()
       root.putData(text)
       
