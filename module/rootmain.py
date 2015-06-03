@@ -101,6 +101,7 @@ if __name__ == "__main__":
 
     try:
       magmessage = que.get(block = False ,timeout = 1)
+      print "get message from magprocess que"
     except:
       print "none data in ipc queue"
 
