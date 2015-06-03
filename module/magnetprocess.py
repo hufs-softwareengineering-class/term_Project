@@ -32,7 +32,7 @@ def magnetSensing(que, total_num):
       human_num += 1
       cur_num = []
       cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
-      result = int(cursor.fetchone()[0])
+      result = int(cursor.fetchone()[0])+1
       cur_num.append(result)
       cur_num.append(human_num)
       cursor.execute("insert into cur_person values (?, ?)", cur_num)
@@ -79,7 +79,7 @@ def magnetSensing(que, total_num):
       human_num = human_num -1
       cur_num = []
       cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
-      result = int(cursor.fetchone()[0])
+      result = int(cursor.fetchone()[0])+1
       cur_num.append(result)
       cur_num.append(human_num)
       cursor.execute("insert into cur_person values (?, ?)", cur_num)
