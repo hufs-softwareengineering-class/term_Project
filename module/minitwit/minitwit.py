@@ -140,6 +140,12 @@ def Manual():
 	#error = None
 	return render_template('Manual.html', leds=leds)
 
+@app.route('/Usertemp')
+def Usertemp():
+#	"""test GPIO"""
+	#error = None
+	return render_template('tempset.html', leds=leds)
+
 #LED ON/OFF 버튼 누릴때 실행되는 부분
 #LED state : GPIO.input("P8_10")
 @app.route('/<led>/<act>')
