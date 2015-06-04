@@ -29,6 +29,13 @@ leds = {
 	'Room3' : {'name' : 'led3', 'state' : 'GPIO.LOW'},
 	'Room4' : {'name' : 'led4', 'state' : 'GPIO.LOW'}
 	}
+
+windows = {
+	'Room1' : {'name' : 'window1', 'state' : 0},
+	'Room2' : {'name' : 'window2', 'state' : 0},
+	'Room3' : {'name' : 'window3', 'state' : 1},
+	'Room4' : {'name' : 'window4', 'state' : 0}
+	}
 # create our little application :)
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -100,16 +107,6 @@ def home():
 	error = None
 	return render_template('home.html', error = error)
 
-#없애기
-@app.route('/public')
-def public_timeline():
-    """Displays the latest messages of all users."""
-    return render_template('test.html', messages=query_db('''
-        select message.*, user.* from message, user
-        where message.author_id = user.user_id
-        order by message.pub_date desc limit ?''', [PER_PAGE]))
-
-#우리는 로그인을 해야만 관리 페이지에 들어갈 수 있음
 #기본은 자동모드?
 #로그인을 하면 뜨는 페이지!
 #test.html -> current state
@@ -138,7 +135,7 @@ def Automatic():
 def Manual():
 #	"""test GPIO"""
 	#error = None
-	return render_template('Manual.html', leds=leds)
+	return render_template('Manual.html', leds=leds, windows=windows)
 
 @app.route('/Usertemp')
 def Usertemp():
@@ -146,7 +143,7 @@ def Usertemp():
 	#error = None
 	return render_template('tempset.html', leds=leds)
 
-#LED ON/OFF 버튼 누릴때 실행되는 부분
+#LED ON/OFF 버튼 누를때 실행되는 부분
 #LED state : GPIO.input("P8_10")
 @app.route('/<led>/<act>')
 def action(led, act):
@@ -156,51 +153,58 @@ def action(led, act):
 		print "clicked ON"
 	return render_template('Manual.html', error=error)
 
+#WINDOWS
+@app.route('/<window>/<winact>')
+def winaction(window, winact):
+	if act == "on":
+		print "window open"
+	return render_template('Manual.html', error=error)
+
 #Follow가 아니라 수정모드로 바꾸면 될듯
-@app.route('/<username>/follow')
-def follow_user(username):
-    """Adds the current user as follower of the given user."""
-    if not g.user:
-        abort(401)
-    whom_id = get_user_id(username)
-    if whom_id is None:
-        abort(404)
-    g.db.execute('insert into follower (who_id, whom_id) values (?, ?)',
-                [session['user_id'], whom_id])
-    g.db.commit()
-    flash('You are now following "%s"' % username)
-    return redirect(url_for('user_timeline', username=username))
+#@app.route('/<username>/follow')
+#def follow_user(username):
+#    """Adds the current user as follower of the given user."""
+#    if not g.user:
+#        abort(401)
+#    whom_id = get_user_id(username)
+#    if whom_id is None:
+#        abort(404)
+#    g.db.execute('insert into follower (who_id, whom_id) values (?, ?)',
+#                [session['user_id'], whom_id])
+#    g.db.commit()
+#    flash('You are now following "%s"' % username)
+#    return redirect(url_for('user_timeline', username=username))
 
 #자동 모드로 !
-@app.route('/<username>/unfollow')
-def unfollow_user(username):
-    """Removes the current user as follower of the given user."""
-    if not g.user:
-        abort(401)
-    whom_id = get_user_id(username)
-    if whom_id is None:
-        abort(404)
-    g.db.execute('delete from follower where who_id=? and whom_id=?',
-                [session['user_id'], whom_id])
-    g.db.commit()
-    flash('You are no longer following "%s"' % username)
-    return redirect(url_for('user_timeline', username=username))
+#@app.route('/<username>/unfollow')
+#def unfollow_user(username):
+#    """Removes the current user as follower of the given user."""
+#    if not g.user:
+#        abort(401)
+#    whom_id = get_user_id(username)
+#    if whom_id is None:
+#        abort(404)
+#    g.db.execute('delete from follower where who_id=? and whom_id=?',
+#                [session['user_id'], whom_id])
+#    g.db.commit()
+#    flash('You are no longer following "%s"' % username)
+#    return redirect(url_for('user_timeline', username=username))
 
 #POST가 필요함???없애도 될듯
-@app.route('/add_message', methods=['POST'])
-def add_message():
-    """Registers a new message for the user."""
-    if 'user_id' not in session:
-        abort(401)
-    if request.form['text']:
-        g.db.execute('''insert into 
-            message (author_id, text, pub_date)
-            values (?, ?, ?)''', (session['user_id'], 
-                                  request.form['text'],
-                                  int(time.time())))
-        g.db.commit()
-        flash('Your message was recorded')
-    return redirect(url_for('timeline'))
+#@app.route('/add_message', methods=['POST'])
+#def add_message():
+#    """Registers a new message for the user."""
+#    if 'user_id' not in session:
+#       abort(401)
+#    if request.form['text']:
+#        g.db.execute('''insert into 
+#            message (author_id, text, pub_date)
+#            values (?, ?, ?)''', (session['user_id'], 
+#                                 request.form['text'],
+#                                  int(time.time())))
+#        g.db.commit()
+#        flash('Your message was recorded')
+#    return redirect(url_for('timeline'))
 
 #로그인 -> 디비에서 값 가져오는거 분석해서 센서 값들 가져오기
 @app.route('/login', methods=['GET', 'POST'])
