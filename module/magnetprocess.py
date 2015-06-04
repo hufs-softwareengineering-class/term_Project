@@ -9,8 +9,6 @@ def magnetSensing(que, total_num, cursor):
   prique = []
   sqllite_file = "our_db.splite"
   pipe_name = "pipefile2"
-  con = sqlite3.connect(sqllite_file)
-  cursor = con.cursor()
   
   if not os.path.exists(pipe_name):
     os.mkfifo(pipe_name)
