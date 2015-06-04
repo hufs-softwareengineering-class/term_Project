@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}User Temperature Setting{% endblock %}
+{% block body %}
+<h2>Current State</h2>
+{% if error %}<div class=error><strong>Error:</strong> {{ error }}</div>{% endif %}
+<form action="" method=post>
+	<table>
+		<tbody>
+			<tr>
+				<td>현재
+				<td><font color=green size=3><B>기준 온도</B></font>는 20 {{ temp1 }}, 24 {{ temp2 }} 도 입니다.
+				<td>온도를 설정하시겠습니까?
+			</tr>
+		</tbody>
+	</table>
+	<p>입력 : <input type=text name=usertemp size=5>, <input type=text name=usertemp size=5> 도 &nbsp;&nbsp;<input type=submit value="SEND"></p> 
+</form>
+{% endblock %}
