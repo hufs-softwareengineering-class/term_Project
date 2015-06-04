@@ -14,7 +14,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 #pipe
 pipe_name = 'pipefile'
 pipe_name2 = 'pipefile2'
-
+con = sqlite3.connect("out_db.sqlite")
+cursur = con.cursor()
 if not os.path.exists(pipe_name):
 	os.mkfifo(pipe_name)
 
@@ -23,6 +24,9 @@ if not os.path.exists(pipe_name2):
 
 pipout=os.open(pipe_name, os.O_WRONLY)
 pipout2=os.open(pipe_name2, os.O_WRONLY)
+
+cursur.execute("selct ID from light order by ID DESC limit 1")
+print cursur.fetchone()
 
 #DB 설정 부분...추후 수정요
 # configuration
@@ -291,10 +295,7 @@ app.jinja_env.filters['datetimeformat'] = format_datetime
 app.jinja_env.filters['gravatar'] = gravatar_url
 
 
-def main(c):
-  cursor = c
+if __name__ == '__main__':
   init_db()
   app.run(host='0.0.0.0', port= 5000, debug = True)
   
-if __name__ == '__main__':
-  pass
