@@ -62,6 +62,7 @@ def connect_db():
 
 def init_db():
     """Creates the database tables."""
+    print g.cousor
     with closing(connect_db()) as db:
         with app.open_resource('schema.sql', mode='r') as f:
             db.cursor().executescript(f.read())
@@ -290,6 +291,10 @@ app.jinja_env.filters['datetimeformat'] = format_datetime
 app.jinja_env.filters['gravatar'] = gravatar_url
 
 
+def main(c):
+  cursor = c
+  init_db()
+  app.run(host='0.0.0.0', port= 5000, debug = True)
+  
 if __name__ == '__main__':
-	init_db()
-	app.run(host='0.0.0.0', port= 5000, debug = True)
+  pass

@@ -16,14 +16,15 @@ timeList = []
 line = ""
 
 if __name__ == "__main__":
+  conn = sqlite3.connect(sqlite_file)
+  c = conn.cursor()
 
+  minitwit = Process(target = __main__, args= (c))
+  minitwit.start() 
   if not os.path.exists(pipe_name):
     os.mkfifo(pipe_name)
 
   pipein = open(pipe_name, 'r')
-  conn = sqlite3.connect(sqlite_file)
-  c = conn.cursor()
-
 
   # Make Queeue
   que = Queue()
