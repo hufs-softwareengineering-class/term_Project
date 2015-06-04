@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-    MiniTwit
-    ~~~~~~~~
 
-    A microblogging application written with Flask and sqlite3.
-
-    :copyright: (c) 2010 by Armin Ronacher.
-    :license: BSD, see LICENSE for more details.
-"""
 from __future__ import with_statement
 import time
 from sqlite3 import dbapi2 as sqlite3
@@ -17,18 +9,37 @@ from contextlib import closing
 from flask import Flask, request, session, url_for, redirect, \
      render_template, abort, g, flash
 from werkzeug.security import check_password_hash, generate_password_hash
+#import Adafruit_BBIO.GPIO as GPIO
 
-
+#DB 설정 부분...추후 수정요
 # configuration
 DATABASE = './minitwit.db'
 PER_PAGE = 30
 DEBUG = True
 SECRET_KEY = 'development key'
 
+#LED name and GPIO number
+#key is 'RoomNum' -> how to send a message to bb?
+#받으려는 비글본에 GPIO 설정이 되어있어야함
+#GPIO의 ' ' 삭제해서 사용
+#포트 설정은 단순한 임시값. 방 번호로 지정해서 메세지 보내기?
+leds = {
+	'Room1' : {'name' : 'led1', 'state' : 'GPIO.LOW'},
+	'Room2' : {'name' : 'led2', 'state' : 1},
+	'Room3' : {'name' : 'led3', 'state' : 'GPIO.LOW'},
+	'Room4' : {'name' : 'led4', 'state' : 'GPIO.LOW'}
+	}
+
+windows = {
+	'Room1' : {'name' : 'window1', 'state' : 0},
+	'Room2' : {'name' : 'window2', 'state' : 0},
+	'Room3' : {'name' : 'window3', 'state' : 1},
+	'Room4' : {'name' : 'window4', 'state' : 0}
+	}
 # create our little application :)
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config.from_envvar('MINITWIT_SETTINGS', silent=True)
+app.config.from_envvar('HOME_MANAGEMENT', silent=True)
 
 
 def connect_db():
@@ -52,18 +63,19 @@ def query_db(query, args=(), one=False):
     return (rv[0] if rv else None) if one else rv
 
 
+#??????
 def get_user_id(username):
     """Convenience method to look up the id for a username."""
     rv = g.db.execute('select user_id from user where username = ?',
                        [username]).fetchone()
     return rv[0] if rv else None
 
-
+#TIME STAMP
 def format_datetime(timestamp):
     """Format a timestamp for display."""
     return datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d @ %H:%M')
 
-
+#필요한가??
 def gravatar_url(email, size=80):
     """Return the gravatar image for the given email address."""
     return 'http://www.gravatar.com/avatar/%s?d=identicon&s=%d' % \
@@ -91,32 +103,13 @@ def teardown_request(exception):
 
 
 @app.route('/')
-def timeline():
-    """Shows a users timeline or if no user is logged in it will
-    redirect to the public timeline.  This timeline shows the user's
-    messages as well as all the messages of followed users.
-    """
-    if not g.user:
-        return redirect(url_for('public_timeline'))
-    return render_template('timeline.html', messages=query_db('''
-        select message.*, user.* from message, user
-        where message.author_id = user.user_id and (
-            user.user_id = ? or
-            user.user_id in (select whom_id from follower
-                                    where who_id = ?))
-        order by message.pub_date desc limit ?''',
-        [session['user_id'], session['user_id'], PER_PAGE]))
+def home():
+	error = None
+	return render_template('home.html', error = error)
 
-
-@app.route('/public')
-def public_timeline():
-    """Displays the latest messages of all users."""
-    return render_template('timeline.html', messages=query_db('''
-        select message.*, user.* from message, user
-        where message.author_id = user.user_id
-        order by message.pub_date desc limit ?''', [PER_PAGE]))
-
-
+#기본은 자동모드?
+#로그인을 하면 뜨는 페이지!
+#test.html -> current state
 @app.route('/<username>')
 def user_timeline(username):
     """Display's a users tweets."""
@@ -130,65 +123,95 @@ def user_timeline(username):
             follower.who_id = ? and follower.whom_id = ?''',
             [session['user_id'], profile_user['user_id']],
             one=True) is not None
-    return render_template('timeline.html', messages=query_db('''
-            select message.*, user.* from message, user where
-            user.user_id = message.author_id and user.user_id = ?
-            order by message.pub_date desc limit ?''',
-            [profile_user['user_id'], PER_PAGE]), followed=followed,
-            profile_user=profile_user)
+    return render_template('test.html')
 
+@app.route('/Automatic')
+def Automatic():
+	"""test GPIO"""
+	error = None
+	return render_template('Automatic.html', error=error)
 
-@app.route('/<username>/follow')
-def follow_user(username):
-    """Adds the current user as follower of the given user."""
-    if not g.user:
-        abort(401)
-    whom_id = get_user_id(username)
-    if whom_id is None:
-        abort(404)
-    g.db.execute('insert into follower (who_id, whom_id) values (?, ?)',
-                [session['user_id'], whom_id])
-    g.db.commit()
-    flash('You are now following "%s"' % username)
-    return redirect(url_for('user_timeline', username=username))
+@app.route('/Manual')
+def Manual():
+#	"""test GPIO"""
+	#error = None
+	return render_template('Manual.html', leds=leds, windows=windows)
 
+@app.route('/Usertemp')
+def Usertemp():
+#	"""test GPIO"""
+	#error = None
+	return render_template('tempset.html', leds=leds)
 
-@app.route('/<username>/unfollow')
-def unfollow_user(username):
-    """Removes the current user as follower of the given user."""
-    if not g.user:
-        abort(401)
-    whom_id = get_user_id(username)
-    if whom_id is None:
-        abort(404)
-    g.db.execute('delete from follower where who_id=? and whom_id=?',
-                [session['user_id'], whom_id])
-    g.db.commit()
-    flash('You are no longer following "%s"' % username)
-    return redirect(url_for('user_timeline', username=username))
+#LED ON/OFF 버튼 누를때 실행되는 부분
+#LED state : GPIO.input("P8_10")
+@app.route('/<led>/<act>')
+def action(led, act):
+	#비글본에 메세지 전달?
+	error = None
+	if act == "on":
+		print "clicked ON"
+	return render_template('Manual.html', error=error)
 
+#WINDOWS
+@app.route('/<window>/<winact>')
+def winaction(window, winact):
+	if act == "on":
+		print "window open"
+	return render_template('Manual.html', error=error)
 
-@app.route('/add_message', methods=['POST'])
-def add_message():
-    """Registers a new message for the user."""
-    if 'user_id' not in session:
-        abort(401)
-    if request.form['text']:
-        g.db.execute('''insert into 
-            message (author_id, text, pub_date)
-            values (?, ?, ?)''', (session['user_id'], 
-                                  request.form['text'],
-                                  int(time.time())))
-        g.db.commit()
-        flash('Your message was recorded')
-    return redirect(url_for('timeline'))
+#Follow가 아니라 수정모드로 바꾸면 될듯
+#@app.route('/<username>/follow')
+#def follow_user(username):
+#    """Adds the current user as follower of the given user."""
+#    if not g.user:
+#        abort(401)
+#    whom_id = get_user_id(username)
+#    if whom_id is None:
+#        abort(404)
+#    g.db.execute('insert into follower (who_id, whom_id) values (?, ?)',
+#                [session['user_id'], whom_id])
+#    g.db.commit()
+#    flash('You are now following "%s"' % username)
+#    return redirect(url_for('user_timeline', username=username))
 
+#자동 모드로 !
+#@app.route('/<username>/unfollow')
+#def unfollow_user(username):
+#    """Removes the current user as follower of the given user."""
+#    if not g.user:
+#        abort(401)
+#    whom_id = get_user_id(username)
+#    if whom_id is None:
+#        abort(404)
+#    g.db.execute('delete from follower where who_id=? and whom_id=?',
+#                [session['user_id'], whom_id])
+#    g.db.commit()
+#    flash('You are no longer following "%s"' % username)
+#    return redirect(url_for('user_timeline', username=username))
 
+#POST가 필요함???없애도 될듯
+#@app.route('/add_message', methods=['POST'])
+#def add_message():
+#    """Registers a new message for the user."""
+#    if 'user_id' not in session:
+#       abort(401)
+#    if request.form['text']:
+#        g.db.execute('''insert into 
+#            message (author_id, text, pub_date)
+#            values (?, ?, ?)''', (session['user_id'], 
+#                                 request.form['text'],
+#                                  int(time.time())))
+#        g.db.commit()
+#        flash('Your message was recorded')
+#    return redirect(url_for('timeline'))
+
+#로그인 -> 디비에서 값 가져오는거 분석해서 센서 값들 가져오기
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """Logs the user in."""
     if g.user:
-        return redirect(url_for('timeline'))
+        return redirect(url_for('test'))
     error = None
     if request.method == 'POST':
         user = query_db('''select * from user where
@@ -201,15 +224,22 @@ def login():
         else:
             flash('You were logged in')
             session['user_id'] = user['user_id']
-            return redirect(url_for('timeline'))
+            return redirect(url_for('test'))
     return render_template('login.html', error=error)
+
+#자동 관리 페이지로 만들어보기//포스트는 필요없을듯
+@app.route('/test', methods=['GET', 'POST'])
+def test():
+	"""test GPIO"""
+	error = None
+	return render_template('test.html', error=error)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """Registers the user."""
     if g.user:
-        return redirect(url_for('timeline'))
+        return redirect(url_for('test'))
     error = None
     if request.method == 'POST':
         if not request.form['username']:
@@ -239,7 +269,7 @@ def logout():
     """Logs the user out."""
     flash('You were logged out')
     session.pop('user_id', None)
-    return redirect(url_for('public_timeline'))
+    return redirect(url_for('home'))
 
 
 # add some filters to jinja
