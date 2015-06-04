@@ -9,7 +9,8 @@ def magnetSensing(que, total_num, cursor):
   prique = []
   sqllite_file = "our_db.splite"
   pipe_name = "pipefile2"
-  
+  line = "" 
+ 
   if not os.path.exists(pipe_name):
     os.mkfifo(pipe_name)
 
@@ -18,7 +19,10 @@ def magnetSensing(que, total_num, cursor):
   prevention_Mode = 1
   
   while 1:
-    line = pipein.readline()[:-1]
+    try:
+      line = pipein.get_nowait() #readline()[:-1]
+    except:
+      pass
     if line != "":
       pass
       # need to parse

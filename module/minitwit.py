@@ -292,4 +292,4 @@ app.jinja_env.filters['gravatar'] = gravatar_url
 
 if __name__ == '__main__':
 	init_db()
-	app.run()
+	app.run(host='0.0.0.0', port= 5000, debug = True)

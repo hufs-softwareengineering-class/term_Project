@@ -13,6 +13,7 @@ current_person = 'cur_person'
 pipe_name = "pipefile"
 Time = datetime.datetime.now()
 timeList = []
+line = ""
 
 if __name__ == "__main__":
 
@@ -96,7 +97,10 @@ if __name__ == "__main__":
   p.start()
   #need to add the pipe module
   while 1:
-    line = pipein.readline()[:-1]
+    try:
+      line = pipein.get_nowait()
+    except:
+      pass
     magmessage = ""
 
     try:
