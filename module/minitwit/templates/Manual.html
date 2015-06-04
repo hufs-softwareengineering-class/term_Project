@@ -13,6 +13,11 @@
 					{% else %}
 					<a href="/{{'Room1'}}/on">ON</a>&nbsp;&nbsp;
 					{% endif %} &nbsp;
+				<td>WINDOW &nbsp; {% if windows['Room1'].state == true %}
+					<a href="/{{'Room1'}}/off">OFF</a>&nbsp;&nbsp;
+					{% else %}
+					<a href="/{{'Room1'}}/on">ON</a>&nbsp;&nbsp;
+					{% endif %} &nbsp;
 				<td>Temperater : <input type=text name=usertemp size=5>도&nbsp;&nbsp;<input type=submit value="SEND">
 			</tr>
 			<tr>
@@ -23,6 +28,11 @@
 					{% else %}
 					<a href="/{{'Room2'}}/on">ON</a>&nbsp;&nbsp;
 					{% endif %}
+				<td>WINDOW &nbsp; {% if windows['Room2'].state == true %}
+					<a href="/{{'Room2'}}/off">OFF</a>&nbsp;&nbsp;
+					{% else %}
+					<a href="/{{'Room2'}}/on">ON</a>&nbsp;&nbsp;
+					{% endif %} &nbsp;
 				<td>Temperater : <input type=text name=usertemp size=5>도&nbsp;&nbsp;<input type=submit value="SEND">
 			</tr>
 			<tr>
@@ -33,6 +43,11 @@
 					{% else %}
 					<a href="/{{'Room3'}}/on">ON</a>&nbsp;&nbsp;
 					{% endif %}
+				<td>WINDOW &nbsp; {% if windows['Room3'].state == true %}
+					<a href="/{{'Room3'}}/off">OFF</a>&nbsp;&nbsp;
+					{% else %}
+					<a href="/{{'Room3'}}/on">ON</a>&nbsp;&nbsp;
+					{% endif %} &nbsp;
 				<td>Temperater : <input type=text name=usertemp size=5>도&nbsp;&nbsp;<input type=submit value="SEND">
 			</tr>
 			<tr>
@@ -43,6 +58,11 @@
 					{% else %}
 					<a href="/{{'Room4'}}/on">ON</a>&nbsp;&nbsp;
 					{% endif %}
+				<td>WINDOW &nbsp; {% if windows['Room4'].state == true %}
+					<a href="/{{'Room4'}}/off">OFF</a>&nbsp;&nbsp;
+					{% else %}
+					<a href="/{{'Room4'}}/on">ON</a>&nbsp;&nbsp;
+					{% endif %} &nbsp;
 				<td>Temperater : <input type=text name=usertemp size=5>도&nbsp;&nbsp;<input type=submit value="SEND">
 			</tr>
 			<tr>
