@@ -92,7 +92,7 @@ if __name__ == "__main__":
   c.execute(humidquery, baselist)
   totalnum = root.gettotalnum()
 
-  p = Process(target = magnetSensing, args=(que, totalnum))
+  p = Process(target = magnetSensing, args=(que, totalnum, c))
   p.start()
   #need to add the pipe module
   while 1:

@@ -1,6 +1,6 @@
 import sqlite3
 import os, time, sys
-def magnetSensing(que, total_num):
+def magnetSensing(que, total_num, cursor):
   tempolight = ""
   magnet_state = 0
   distance_flag = 0
