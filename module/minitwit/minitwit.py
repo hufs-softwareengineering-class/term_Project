@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-
 from __future__ import with_statement
-import time
+#import time
+import os, time, sys
 from sqlite3 import dbapi2 as sqlite3
 from hashlib import md5
 from datetime import datetime
@@ -10,6 +10,19 @@ from flask import Flask, request, session, url_for, redirect, \
      render_template, abort, g, flash
 from werkzeug.security import check_password_hash, generate_password_hash
 #import Adafruit_BBIO.GPIO as GPIO
+
+#pipe
+pipe_name = 'pipefile'
+pipe_name2 = 'pipefile2'
+
+if not os.path.exists(pipe_name):
+	os.mkfifo(pipe_name)
+
+if not os.path.exists(pipe_name2):
+	os.mkfifo(pipe_name2)
+
+pipout=os.open(pipe_name, os.O_WRONLY)
+pipout2=os.open(pipe_name2, os.O_WRONLY)
 
 #DB 설정 부분...추후 수정요
 # configuration
@@ -278,5 +291,5 @@ app.jinja_env.filters['gravatar'] = gravatar_url
 
 
 if __name__ == '__main__':
-    init_db()
-    app.run()
+	init_db()
+	app.run()
