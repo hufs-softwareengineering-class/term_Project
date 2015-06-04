@@ -3,6 +3,7 @@ import sqlite3
 import os, time, sys
 from multiprocessing import Process, Queue
 from magnetprocess import *
+from minitwit import *
 
 sqlite_file = 'our_db.sqlite'    # name of the sqlite database file
 lighttable = 'light'
