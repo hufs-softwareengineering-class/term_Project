@@ -239,8 +239,38 @@ def login():
 @app.route('/test', methods=['GET', 'POST'])
 def test():
 	"""Current State"""
+	light = []
+	temper = []
+	humid = []
+	totalnum = 2
+#	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
+#	totalnum = int(cursor.fetchone()[1])
+        print "before"
+	cursur.execute("SELECT * FROM light order by ID DESC limit 1")
+	print "after"
+        for i in range(totalnum):
+		light.append(0)
+		temper.append(0)
+		humid.append(0)
+	lighttable = cursur.fetchone()
+	for i in range(totalnum):
+		
+		light[i] = lighttable[i+1]
+	
+	cursur.execute("SELECT * FROM temper order by ID DESC limit 1")
+        tempertable = cursur.fetchone()
+	for i in range(totalnum):
+		temper[i] = tempertable[i+1]
+
+
+	cursur.execute("SELECT * FROM humid order by ID DESC limit 1")
+	humidtable = cursur.fetchone()
+	for i in range(totalnum):
+		humid[i] = humidtable[i+1]
+	
 	error = None
-	return render_template('test.html', error=error)
+	return render_template('test.html', error=error, light=light, \
+			temper=temper, humid=humid, totalnum=totalnum)
 
 
 @app.route('/register', methods=['GET', 'POST'])
