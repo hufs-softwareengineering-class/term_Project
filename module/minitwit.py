@@ -177,7 +177,8 @@ def Automatic():
 		temper[i] = int(cursor.fetchone()[i+1])
 	
 	error = None
-	return render_template('Automatic.html', error=error)
+	return render_template('Automatic.html', error=error, light=light, \
+			temper=temper, humid=humid, totalnum=totalnum)
 
 @app.route('/Manual')
 def Manual():
@@ -208,52 +209,6 @@ def winaction(window, winact):
 		print "window open"
 	return render_template('Manual.html', error=error)
 
-#Follow가 아니라 수정모드로 바꾸면 될듯
-#@app.route('/<username>/follow')
-#def follow_user(username):
-#    """Adds the current user as follower of the given user."""
-#    if not g.user:
-#        abort(401)
-#    whom_id = get_user_id(username)
-#    if whom_id is None:
-#        abort(404)
-#    g.db.execute('insert into follower (who_id, whom_id) values (?, ?)',
-#                [session['user_id'], whom_id])
-#    g.db.commit()
-#    flash('You are now following "%s"' % username)
-#    return redirect(url_for('user_timeline', username=username))
-
-#자동 모드로 !
-#@app.route('/<username>/unfollow')
-#def unfollow_user(username):
-#    """Removes the current user as follower of the given user."""
-#    if not g.user:
-#        abort(401)
-#    whom_id = get_user_id(username)
-#    if whom_id is None:
-#        abort(404)
-#    g.db.execute('delete from follower where who_id=? and whom_id=?',
-#                [session['user_id'], whom_id])
-#    g.db.commit()
-#    flash('You are no longer following "%s"' % username)
-#    return redirect(url_for('user_timeline', username=username))
-
-#POST가 필요함???없애도 될듯
-#@app.route('/add_message', methods=['POST'])
-#def add_message():
-#    """Registers a new message for the user."""
-#    if 'user_id' not in session:
-#       abort(401)
-#    if request.form['text']:
-#        g.db.execute('''insert into 
-#            message (author_id, text, pub_date)
-#            values (?, ?, ?)''', (session['user_id'], 
-#                                 request.form['text'],
-#                                  int(time.time())))
-#        g.db.commit()
-#        flash('Your message was recorded')
-#    return redirect(url_for('timeline'))
-
 #로그인 -> 디비에서 값 가져오는거 분석해서 센서 값들 가져오기
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -276,9 +231,10 @@ def login():
     return render_template('login.html', error=error)
 
 #자동 관리 페이지로 만들어보기//포스트는 필요없을듯
+#Current State
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-	"""test GPIO"""
+	"""Current State"""
 	error = None
 	return render_template('test.html', error=error)
 
