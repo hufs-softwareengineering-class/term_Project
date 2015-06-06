@@ -1,5 +1,7 @@
 import sqlite3
 import os, time, sys
+from GPIOmagnetRead import *
+from GPIOdistance import *
 def magnetSensing(que, total_num, conn):
   tempolight = ""
   magnet_state = 0
@@ -28,8 +30,8 @@ def magnetSensing(que, total_num, conn):
       pass
       # need to parse
       # setting prevention_Mode
-    magnet_state = 1#GPIOmagnetRead()
-    distance_flag = 0
+    magnet_state = GPIOmagnetRead()
+    distance_flag = GPIOdistance()
     # read distance_flag
     if distance_flag == 0 and magnet_state == 1:
       human_num += 1
