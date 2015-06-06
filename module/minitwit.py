@@ -154,9 +154,9 @@ def Automatic():
 	light = []
 	temper = []
 	humid = []
-	totalnum = 0
-	cursor.excute("SELECT ID FROM cur_person order by ID DESC limit 1")
-	totalnum = int(cursor.fetchone()[0])
+	totalnum = 2
+#	cursor.excute("SELECT ID FROM cur_person order by ID DESC limit 1")
+#	totalnum = int(cursor.fetchone()[1])
 	cursor.excute("SELECT * FROM light order by ID DESC limit 1")
 	for i in range(totalnum):
 		light.append(0)
@@ -166,15 +166,15 @@ def Automatic():
 	for i in range(totalnum):
 		light[i] = int(cursor.fetchone()[i+1])
 	
-	cursor.excute("SELECT * FROM light order by ID DESC limit 1")
+	cursor.excute("SELECT * FROM temper order by ID DESC limit 1")
 	for i in range(totalnum):
 		temper[i] = int(cursor.fetchone()[i+1])
 
 
-	cursor.excute("SELECT * FROM light order by ID DESC limit 1")
+	cursor.excute("SELECT * FROM humid order by ID DESC limit 1")
 	
 	for i in range(totalnum):
-		temper[i] = int(cursor.fetchone()[i+1])
+		humid[i] = int(cursor.fetchone()[i+1])
 	
 	error = None
 	return render_template('Automatic.html', error=error, light=light, \
