@@ -151,6 +151,31 @@ def user_timeline(username):
 @app.route('/Automatic')
 def Automatic():
 	"""test GPIO"""
+	light = []
+	temper = []
+	humid = []
+	totalnum = 0
+	cursor.excute("SELECT ID FROM cur_person order by ID DESC limit 1")
+	totalnum = int(cursor.fetchone()[0])
+	cursor.excute("SELECT * FROM light order by ID DESC limit 1")
+	for i in range(totalnum):
+		light.append(0)
+		temper.append(0)
+		humid.append(0)
+
+	for i in range(totalnum):
+		light[i] = int(cursor.fetchone()[i+1])
+	
+	cursor.excute("SELECT * FROM light order by ID DESC limit 1")
+	for i in range(totalnum):
+		temper[i] = int(cursor.fetchone()[i+1])
+
+
+	cursor.excute("SELECT * FROM light order by ID DESC limit 1")
+	
+	for i in range(totalnum):
+		temper[i] = int(cursor.fetchone()[i+1])
+	
 	error = None
 	return render_template('Automatic.html', error=error)
 
