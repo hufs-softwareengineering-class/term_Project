@@ -111,8 +111,10 @@ if __name__ == "__main__":
     try:
       print "before read========" 
       #line = pipein.readline()[:-1]
-      line = os.read(pipein, 1024)
-      print line + "get message from web process que"
+      #line = os.read(pipein, 1024)
+      if os.path.getsize("pipefile") !=0:
+        line = pipein.readline()[:-1]
+        print line + "get message from web process que"
     except:
       print "none data in ipc pipe"
     magmessage = ""
