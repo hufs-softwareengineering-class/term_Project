@@ -118,11 +118,28 @@ if __name__ == "__main__":
     if line!="": # need to modify
       #need to parsing the json and make meassage , then enqueue the message to the queue
       #need to parsing the mode 
-      if schema == "prevenmode":
-        #prevalue = #parsing the json 
-        #root.setPrevention(prevalue)
-        continue
-      message = 0 #parisng the jsonand make the message (need to access the DB data) 
+      schema , command = line.split("'")[1], line.split("'")[3].split("/")
+      message= ""
+      if schema == "window":
+        for i in range(root.gettotalnum):
+          if (i == int(command[0])-1):
+            message += command[1]
+            continue
+          message+= '?'
+
+      else:
+        if schema == "light":
+          c.execute("select * from light order by ID DESC limit 1")
+        elif schema == "temper":
+          c.execute("selct * from temper order by ID DESC limit 1")
+        dbtable = c.fetchone()
+        for i in range(root.gettotalnum):
+          if (i == int(command[0])-1):
+            message+= command[1]
+            continue
+          message+=dbtable[i-1]
+      
+      #parisng the jsonand make the message (need to access the DB data) 
       queue.append(message)
 
     elif len(queue) == 0: #need to modify

@@ -236,7 +236,7 @@ def action(led, act):
 	else:
 		command = 0
 	
-	message = {"light" : "%d/%d"%(num, command)}
+	message = "{ 'light' : '%d/%d'}"%(num, command)
 	os.write(pipefile, message)
 	error = None
 	if act == "on":
