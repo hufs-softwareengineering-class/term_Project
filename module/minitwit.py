@@ -337,8 +337,8 @@ def test():
 @app.route('/Usertemp', methods=['GET', 'POST'])
 def Usertemp():
 	if request.method == 'POST':
-		print 'usertemp' + "============> USER TEMP 1"
-		print 'usertemp2' + "============> USER TEMP 2"
+		print usertemp + "============> USER TEMP 1"
+		print usertemp2 + "============> USER TEMP 2"
 		return render_template('tempset.html')
 	return render_template('tempset.html')
 
