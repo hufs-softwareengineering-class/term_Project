@@ -180,7 +180,7 @@ class Root():
       elif temperarr[i] < base_row :
         tempTemper += "0"
       else :
-        tempTemper += "-1"
+        tempTemper += "2"
 
       if humidarr[i] > 75:
         tempHumid += "0"
@@ -200,12 +200,16 @@ class Root():
         pass#GPIOlightWriter(1)
       elif dataparse[1][0] is "0":
         pass#GPIOlightWriter(0)
+      elif dataparse[1][0] is "?":
+        pass
 
     if dataparse[2] != "?":
       if dataparse[2][0] is "0":
         pass#GPIOtemperWriter(0)
       elif dataparse[2][0] is "1":
         pass#GPIOtemperWriter(1)
+      elif dataparse[2][0] is "?":
+        pass
       else:
         pass#GPIOtemperWriter(-1)
 
@@ -215,6 +219,8 @@ class Root():
       elif dataparse[3][0] is "0":
         pass#GPIOhumidWriter(0)
 
+      elif dataparse[3][0] is "?":
+        pass
     
     for i in self.child:
       clientmodule(message, self.dic_addr[i])

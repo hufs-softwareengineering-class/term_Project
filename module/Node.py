@@ -152,6 +152,8 @@ class Node():
       elif dataparse[1][self.number] is "0":
         pass#GPIOlightWriter(0)
         #turn off the light
+      elif dataparse[1][self.number] is "?":
+        pass
     # temperature state = {-1(unchange), 0(up temperature), 1(down temperature)}
     if dataparse[2] != "?":
       if dataparse[2][self.number] is "0":
@@ -161,6 +163,8 @@ class Node():
       elif dataparse[2][self.number] is "1":
         pass#GPIOtemperWriter(1)
         #turn on the temperature light red
+      elif dataparse[2][self.number] is "?":
+        pass
       else:
         GPIOtemperWriter(-1)
 
@@ -171,6 +175,8 @@ class Node():
       elif dataparse[3][self.number] is "0":
         pass#GPIOhumidWriter(0)
         #close the window
+      elif dataparse[3][self.number] is "?":
+        pass
 
     
     message = "%s/%s/%s/%s" %(dataparse[0], dataparse[1], dataparse[2], dataparse[3])
