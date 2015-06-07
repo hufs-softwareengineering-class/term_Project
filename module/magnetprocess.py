@@ -57,7 +57,7 @@ def magnetSensing(que, total_num, conn):
             cursor.execute(query)
             prique[i][j] = int(cursor.fetchone[0])
             totalsum += prique[i][j]
-        basenum = totalsum /(total_num*(total_num -1) /2)
+        basenum = totalsum /((total_num*(total_num -1)) /2)
         temparr = []
         for i in range(total_num):
           temparr.append(0)
