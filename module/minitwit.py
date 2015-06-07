@@ -25,6 +25,7 @@ pipout=os.open(pipe_name, os.O_WRONLY)
 pipout2=os.open(pipe_name2, os.O_WRONLY)
 
 con = sqlite3.connect("our_db.sqlite", check_same_thread=False)
+con.isolation_level =None #auto commit
 cursur = con.cursor()
 cursur.execute("select ID from light order by ID DESC limit 1")
 print cursur.fetchone()

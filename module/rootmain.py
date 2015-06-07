@@ -22,6 +22,7 @@ if __name__ == "__main__":
   pipein = open(pipe_name, 'r')
 
   conn = sqlite3.connect(sqlite_file, check_same_thread=False)
+  conn.isolation_level =None
   c = conn.cursor()
 
   # Make Queeue
