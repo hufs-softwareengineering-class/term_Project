@@ -236,7 +236,7 @@ def action(led, act):
 		command = 0
 	
 	message = {"light" : "%d/%d"%(num, command)}
-	os.write('pipefile2', message)
+	os.write('pipefile', message)
 	error = None
 	if act == "on":
 		print "clicked ON"
