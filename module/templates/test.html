@@ -6,7 +6,7 @@
 <form action="" method=post>
 	<table align="center">
 		<tbody>
-			{% for i in totalnum %}			
+			{% for i in range(totalnum) %}			
 			<tr>
 				<th>Room {{ i }}&nbsp;
 					<td> Light : {% if light[i] == 1 %} ON {% else %} OFF{% endif %} /
