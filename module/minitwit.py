@@ -229,6 +229,14 @@ def Usertemp():
 @app.route('/led/<num>/<act>')
 def action(led, act):
 	#비글본에 메세지 전달?
+	command = 0
+	if act == "on":
+		command = 1
+	else:
+		command = 0
+	
+	message = {"light" : "%d/%d"%(num, command)}
+	os.write('pipefile2', message)
 	error = None
 	if act == "on":
 		print "clicked ON"
