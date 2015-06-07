@@ -7,7 +7,7 @@
 		<tbody>
 			{% for i in range(totalnum) %}
 			<tr>
-				<th align="center">Room {{ i }} &nbsp;
+				<th align="center">Room {{ i+1 }} &nbsp;
 				<td align="center">LIGHT &nbsp; {% if light[i] == true %}
 					<a href="led/{{ i }}/off">OFF</a>&nbsp;&nbsp;
 					{% else %}
