@@ -4,9 +4,17 @@
 <h2>Current State</h2>
 {% if error %}<div class=error><strong>Error:</strong> {{ error }}</div>{% endif %}
 <form action="" method=post>
-	<table>
+	<table align="center">
 		<tbody>
+			{% for i in totalnum %}			
 			<tr>
+				<th>Room {{ i }}&nbsp;
+					<td> Light : {% if light[i] == 1 %} ON {% else %} OFF{% endif %} /
+					<td> Temp : {{ temper[i] }} 도 /
+					<td> Humid : {{ humid[i] }} %		 
+			</tr>
+			{% endfor %}
+<!--			<tr>
 				<th>Room 1&nbsp;
 					<td> Light : ON {{ light[0] }} /
 					<td> Temp : 22 {{ temper[0] }} 도 /
@@ -20,7 +28,7 @@
 			<tr>
 				<td> &nbsp; &nbsp;
 			</tr>
-<!--			<tr>
+			<tr>
 				<th>Room 3 &nbsp;
 					<td> Light : ON{{ light[2] }} /
 					<td> Temp : 23{{ temper[2] }} 도 /
