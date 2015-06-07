@@ -5,4 +5,4 @@ def GPIOdistance():
   #value = ADC.read("P9_34")
 
   #return value
-  return random.randint(0,1)
+  return 0#random.randint(0,1)
