@@ -270,10 +270,10 @@ def action(led, num, act):
 			temper=temper, humid=humid, totalnum=totalnum)
 
 #WINDOWS
-@app.route('/<window>/<num>/<act>')
-def winaction(window, num, act):
+@app.route('/<window>/<num>/<winact>')
+def winaction(window, num, winact):
 	command = 0
-	if act == "on":
+	if winact == "on":
 		command = 1
 	else:
 		command = 0
@@ -317,10 +317,10 @@ def winaction(window, num, act):
 			temper=temper, humid=humid, totalnum=totalnum)
 
 #TEMPER
-@app.route('/<temper>/<num>/<act>')
-def tempaction(temper, num, winact):
+@app.route('/<temper>/<num>/<tempact>')
+def tempaction(temper, num, tempact):
 	command = 0
-	if act == "up":
+	if tempact == "up":
 		command = 1
 	else:
 		command = 0
@@ -437,11 +437,11 @@ def Usertemp():
     		cursur.execute("insert into setting values (?,?,?)", data)
     		cursur.execute("SELECT ID FROM setting order by ID DESC limit 1")
     		print (cursur.fetchone())
-		return render_template('tempset.html')
+		return render_template('tempset.html', high=high, low=low)
     	cursur.execute("SELECT * FROM setting order by ID DESC limit 1")
     	data= cursur.fetchone()
-	high = int(data[2])
-	low = int(data[1])
+	high = int(data[1])
+	low = int(data[2])
 	return render_template('tempset.html', high=high, low=low)
 
 
