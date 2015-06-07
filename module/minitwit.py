@@ -227,7 +227,7 @@ def Usertemp():
 
 #LED ON/OFF 버튼 누를때 실행되는 부분
 #LED state : GPIO.input("P8_10")
-@app.route('/led/<num>/<act>')
+@app.route('/<led>/<num>/<act>')
 def action(led, num, act):
 	#비글본에 메세지 전달?
 	command = 0
@@ -244,7 +244,7 @@ def action(led, num, act):
 	return render_template('Manual.html', error=error)
 
 #WINDOWS
-@app.route('/window/<num>/<winact>')
+@app.route('/<window>/<num>/<winact>')
 def winaction(window, num, winact):
 	if act == "on":
 		print "window open"
