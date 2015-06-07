@@ -1,6 +1,6 @@
 import sqlite3
 import os, time, sys
-from GPIOmagnetRead import *
+from GPIOmagnetread import *
 from GPIOdistance import *
 def magnetSensing(que, total_num, conn):
   tempolight = ""
@@ -91,7 +91,7 @@ def magnetSensing(que, total_num, conn):
       
       templight = ""
       if human_num == 0:
-        for i in total_num:
+        for i in range(total_num):
           tempolight +='0'
         message = "put/%s/%s/%s" %(tempolight, "?", "?")
         que.put(message)
