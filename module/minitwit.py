@@ -238,10 +238,39 @@ def action(led, num, act):
 	
 	message = "{ 'light' : '%d/%d'}"%(int(num), int(command))
 	os.write(pipout, message)
+	
+	light = []
+	temper = []
+	humid = []
+	totalnum = 2
+#	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
+#	totalnum = int(cursor.fetchone()[1])
+        print "before"
+	cursur.execute("SELECT * FROM light order by ID DESC limit 1")
+	print "after"
+        for i in range(totalnum):
+		light.append(0)
+		temper.append(0)
+		humid.append(0)
+	lighttable = cursur.fetchone()
+	for i in range(totalnum):
+		
+		light[i] = lighttable[i+1]
+	
+	cursur.execute("SELECT * FROM temper order by ID DESC limit 1")
+        tempertable = cursur.fetchone()
+	for i in range(totalnum):
+		temper[i] = tempertable[i+1]
+
+
+	cursur.execute("SELECT * FROM humid order by ID DESC limit 1")
+	humidtable = cursur.fetchone()
+	for i in range(totalnum):
+		humid[i] = humidtable[i+1]
+	
 	error = None
-	if act == "on":
-		print "clicked ON"
-	return render_template('Manual.html', error=error)
+	return render_template('Manual.html', error=error, light=light, \
+			temper=temper, humid=humid, totalnum=totalnum)
 
 #WINDOWS
 @app.route('/<window>/<num>/<winact>')
