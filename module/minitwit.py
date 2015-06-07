@@ -219,11 +219,6 @@ def Manual():
 	return render_template('Manual.html', error=error, light=light, \
 			temper=temper, humid=humid, totalnum=totalnum)
 
-@app.route('/Usertemp')
-def Usertemp():
-#	"""test GPIO"""
-	#error = None
-	return render_template('tempset.html', leds=leds)
 
 #LED ON/OFF 버튼 누를때 실행되는 부분
 #LED state : GPIO.input("P8_10")
@@ -236,12 +231,41 @@ def action(led, num, act):
 	else:
 		command = 0
 	
-	message = "{ 'light' : '%d/%d'}"%(num, command)
-	os.write(pipefile, message)
+	message = "{ 'light' : '%d/%d'}"%(int(num), int(command))
+	os.write(pipout, message)
+	
+	light = []
+	temper = []
+	humid = []
+	totalnum = 2
+#	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
+#	totalnum = int(cursor.fetchone()[1])
+        print "before"
+	cursur.execute("SELECT * FROM light order by ID DESC limit 1")
+	print "after"
+        for i in range(totalnum):
+		light.append(0)
+		temper.append(0)
+		humid.append(0)
+	lighttable = cursur.fetchone()
+	for i in range(totalnum):
+		
+		light[i] = lighttable[i+1]
+	
+	cursur.execute("SELECT * FROM temper order by ID DESC limit 1")
+        tempertable = cursur.fetchone()
+	for i in range(totalnum):
+		temper[i] = tempertable[i+1]
+
+
+	cursur.execute("SELECT * FROM humid order by ID DESC limit 1")
+	humidtable = cursur.fetchone()
+	for i in range(totalnum):
+		humid[i] = humidtable[i+1]
+	
 	error = None
-	if act == "on":
-		print "clicked ON"
-	return render_template('Manual.html', error=error)
+	return render_template('Manual.html', error=error, light=light, \
+			temper=temper, humid=humid, totalnum=totalnum)
 
 #WINDOWS
 @app.route('/<window>/<num>/<winact>')
@@ -308,6 +332,15 @@ def test():
 	error = None
 	return render_template('test.html', error=error, light=light, \
 			temper=temper, humid=humid, totalnum=totalnum)
+
+
+@app.route('/Usertemp', methods=['GET', 'POST'])
+def Usertemp():
+	if request.method == 'POST':
+		print 'usertemp' + "============> USER TEMP 1"
+		print 'usertemp2' + "============> USER TEMP 2"
+		return render_template('tempset.html')
+	return render_template('tempset.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
