@@ -18,7 +18,9 @@
 					{% else %}
 					<a href="window/{{ i }}/on">ON</a>&nbsp;&nbsp;
 					{% endif %} &nbsp;
-				<td align="center">Temperater : <input type=text name=usertemp size=5>도&nbsp;&nbsp;<input type=submit value="SEND">
+				<td align="center">Temperater : 
+				<td align="center"> <a href="temper/{{ i }}/up">UP</a>&nbsp;&nbsp;
+				<td align="center"> <a href="temper/{{ i }}/down">DOWN</a>&nbsp;&nbsp;
 			</tr>
 			{% endfor %}
 			<tr>
