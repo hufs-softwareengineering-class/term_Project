@@ -186,9 +186,37 @@ def Automatic():
 
 @app.route('/Manual')
 def Manual():
-#	"""test GPIO"""
-	#error = None
-	return render_template('Manual.html', leds=leds, windows=windows)
+	light = []
+	temper = []
+	humid = []
+	totalnum = 2
+#	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
+#	totalnum = int(cursor.fetchone()[1])
+	print "before"
+	cursur.execute("SELECT * FROM light order by ID DESC limit 1")
+	print "after"
+        for i in range(totalnum):
+		light.append(0)
+		temper.append(0)
+		humid.append(0)
+	lighttable = cursur.fetchone()
+	for i in range(totalnum):
+		light[i] = lighttable[i+1]
+	
+	cursur.execute("SELECT * FROM temper order by ID DESC limit 1")
+        tempertable = cursur.fetchone()
+	for i in range(totalnum):
+		temper[i] = tempertable[i+1]
+
+
+	cursur.execute("SELECT * FROM humid order by ID DESC limit 1")
+	humidtable = cursur.fetchone()
+	for i in range(totalnum):
+		humid[i] = humidtable[i+1]
+	
+	error = None
+	return render_template('Manual.html', error=error, light=light, \
+			temper=temper, humid=humid, totalnum=totalnum)
 
 @app.route('/Usertemp')
 def Usertemp():
@@ -198,7 +226,7 @@ def Usertemp():
 
 #LED ON/OFF 버튼 누를때 실행되는 부분
 #LED state : GPIO.input("P8_10")
-@app.route('/<led>/<act>')
+@app.route('/led/<num>/<act>')
 def action(led, act):
 	#비글본에 메세지 전달?
 	error = None
@@ -207,7 +235,7 @@ def action(led, act):
 	return render_template('Manual.html', error=error)
 
 #WINDOWS
-@app.route('/<window>/<winact>')
+@app.route('/window/<num>/<winact>')
 def winaction(window, winact):
 	if act == "on":
 		print "window open"
