@@ -43,7 +43,8 @@ SECRET_KEY = 'development key'
 #받으려는 비글본에 GPIO 설정이 되어있어야함
 #GPIO의 ' ' 삭제해서 사용
 #포트 설정은 단순한 임시값. 방 번호로 지정해서 메세지 보내기?
-leds = {
+"""
+	leds = {
 	'Room1' : {'name' : 'led1', 'state' : 'GPIO.LOW'},
 	'Room2' : {'name' : 'led2', 'state' : 1},
 	'Room3' : {'name' : 'led3', 'state' : 'GPIO.LOW'},
@@ -56,6 +57,7 @@ windows = {
 	'Room3' : {'name' : 'window3', 'state' : 1},
 	'Room4' : {'name' : 'window4', 'state' : 0}
 	}
+"""
 # create our little application :)
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -222,15 +224,19 @@ def Manual():
 
 #LED ON/OFF 버튼 누를때 실행되는 부분
 #LED state : GPIO.input("P8_10")
-@app.route('/<led>/<num>/<act>')
-def action(led, num, act):
+@app.route('/<cmd>/<num>/<act>')
+def action(cmd, num, act):
 	#비글본에 메세지 전달?
+	print "========	This is Command ======="
+
 	command = 0
-	if act == "on":
-		command = 1
+	if cmd == 'led':
+		if act == "on":
+			command = 1
+		else:
+			command = 0
 	else:
-		command = 0
-	
+		print "Other Command"
 	message = "{'light' : '%d/%d'}\n"%(int(num), int(command))
         print message + "before wirte pipe=============="
 	os.write(pipout, message)
@@ -272,6 +278,7 @@ def action(led, num, act):
 #WINDOWS
 @app.route('/<window>/<num>/<winact>')
 def winaction(window, num, winact):
+	print "========	This is Window Command ======="
 	command = 0
 	if winact == "on":
 		command = 1
@@ -319,6 +326,7 @@ def winaction(window, num, winact):
 #TEMPER
 @app.route('/<temper>/<num>/<tempact>')
 def tempaction(temper, num, tempact):
+	print "========	This is Temper Command ======="
 	command = 0
 	if tempact == "up":
 		command = 1
