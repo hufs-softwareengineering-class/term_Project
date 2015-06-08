@@ -126,8 +126,7 @@ def teardown_request(exception):
 
 
 @app.route('/')
-def home():
-       
+def home():       
 	cursur.execute("select * from light order by ID DESC limit 1")
 	print cursur.fetchone()
 	print "hello mungchung"
@@ -302,6 +301,7 @@ def action(cmd, num, act):
 	return render_template('Manual.html', error=error, light=light, \
 			temper=temper, humid=humid, totalnum=totalnum, t_inve=inve)
 
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     """Logs the user in."""
     if g.user:
