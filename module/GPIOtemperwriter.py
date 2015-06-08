@@ -7,11 +7,11 @@ def GPIOtemperWriter(num):
 
 
   if num == 0:
-    GPIO.output("P8_14", GPIO.HIGH)
-    GPIO.output("P8_16", GPIO.LOW)
-  elif num == 1:
     GPIO.output("P8_14", GPIO.LOW)
     GPIO.output("P8_16", GPIO.HIGH)
+  elif num == 1:
+    GPIO.output("P8_14", GPIO.HIGH)
+    GPIO.output("P8_16", GPIO.LOW)
   else: # num == -1
     GPIO.output("P8_14", GPIO.LOW)
     GPIO.output("P8_16", GPIO.LOW)
