@@ -14,6 +14,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 #pipe
 pipe_name = 'pipefile'
 pipe_name2 = 'pipefile2'
+inve = 0 #침입감지
 if not os.path.exists(pipe_name):
 	os.mkfifo(pipe_name)
 
@@ -34,9 +35,9 @@ print "hello mungchung"
 #DB 설정 부분...추후 수정요
 # configuration
 DATABASE = './minitwit.db'
-PER_PAGE = 30
+#PER_PAGE = 30
 DEBUG = True
-SECRET_KEY = 'development key'
+#SECRET_KEY = 'development key'
 
 #LED name and GPIO number
 #key is 'RoomNum' -> how to send a message to bb?
@@ -71,7 +72,6 @@ def connect_db():
 
 def init_db():
     """Creates the database tables."""
-    inve = 0 #침입감지
     with closing(connect_db()) as db:
         with app.open_resource('schema.sql', mode='r') as f:
             db.cursor().executescript(f.read())
@@ -193,7 +193,7 @@ def Manual():
 	light = []
 	temper = []
 	humid = []
-	t_inve = g.inve
+	global inve
 	totalnum = 2
 #	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
 #	totalnum = int(cursor.fetchone()[1])
@@ -221,7 +221,7 @@ def Manual():
 	
 	error = None
 	return render_template('Manual.html', error=error, light=light, \
-			temper=temper, humid=humid, totalnum=totalnum, t_inve=t_inve)
+			temper=temper, humid=humid, totalnum=totalnum, t_inve=inve)
 
 
 #LED ON/OFF 버튼 누를때 실행되는 부분
@@ -230,7 +230,7 @@ def Manual():
 def action(cmd, num, act):
 	#비글본에 메세지 전달?
 	print "========	This is Command ======="
-
+	global inve
 	command = 0
 	if cmd == 'led':
 		if act == "on":
@@ -261,17 +261,17 @@ def action(cmd, num, act):
 		print message + "after wirte pipe============"
 	elif cmd == 't_inve':
 		if act == "on":
-			g.inve = 1
+			inve = 1
 		else:
-			g.inve = 0
-		os.write(pipout2, g.inve)
+			inve = 0
+		os.write(pipout2, inve)
 	else:
 		print "COMMAND SEND ERROR"
 
 	light = []
 	temper = []
 	humid = []
-	t_inve = g.inve
+	t_inve = inve
 	totalnum = 2
 #	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
 #	totalnum = int(cursor.fetchone()[1])
@@ -300,7 +300,7 @@ def action(cmd, num, act):
 	
 	error = None
 	return render_template('Manual.html', error=error, light=light, \
-			temper=temper, humid=humid, totalnum=totalnum, t_inve=t_inve)
+			temper=temper, humid=humid, totalnum=totalnum, t_inve=inve)
 
 def login():
     """Logs the user in."""
