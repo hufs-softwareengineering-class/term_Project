@@ -298,7 +298,7 @@ def action(cmd, num, act):
 	
 	error = None
 	return render_template('Manual.html', error=error, light=light, \
-			temper=temper, humid=humid, totalnum=totalnum, inve=inve)
+			temper=temper, humid=humid, totalnum=totalnum, t_inve=inve)
 
 def login():
     """Logs the user in."""
