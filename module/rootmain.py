@@ -1,5 +1,6 @@
 from Root import *
 import errno
+import signal
 import sqlite3
 import os, time, sys
 from multiprocessing import Process, Queue
@@ -15,18 +16,16 @@ pipe_name = "pipefile"
 Time = datetime.datetime.now()
 timeList = []
 line = ""
-def safe_read(fd, size=1024):
-   ''' reads data from a pipe and returns `None` on EAGAIN '''
-   try:
-      return os.read(fd, size)
-   except OSError, exc:
-      if exc.errno == errno.EAGAIN:
-         return None
-      raise
+flag  = 0
+def handler(signo, frame):
+  print 'Signal handler called with signal', signum
+  flag = 1
+
 
 if __name__ == "__main__":
   if not os.path.exists(pipe_name):
     os.mkfifo(pipe_name)
+  signal.signal(signal.SIGUSR1 , handler)
   print "hello"
   pipein = open(pipe_name, 'r')
 
