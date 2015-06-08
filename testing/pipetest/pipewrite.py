@@ -8,6 +8,8 @@ pipeout = os.open(pipe_name, os.O_WRONLY)
 
 print "hello"
 '''
+o
+
 counter = 0
 
 while True:
