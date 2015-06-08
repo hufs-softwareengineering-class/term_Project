@@ -7,4 +7,4 @@ def GPIOtemperRead():
 
   humid, temp = Adafruit_DHT.read_retry(sensor, pin)
 
-  return temp
+  return int(temp)
