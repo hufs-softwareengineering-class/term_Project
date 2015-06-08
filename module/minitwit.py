@@ -193,7 +193,7 @@ def Manual():
 	light = []
 	temper = []
 	humid = []
-	t_inve = inve
+	t_inve = g.inve
 	totalnum = 2
 #	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
 #	totalnum = int(cursor.fetchone()[1])
@@ -261,17 +261,17 @@ def action(cmd, num, act):
 		print message + "after wirte pipe============"
 	elif cmd == 't_inve':
 		if act == "on":
-			inve = 1
+			g.inve = 1
 		else:
-			inve = 0
-		os.write(pipout2, inve)
+			g.inve = 0
+		os.write(pipout2, g.inve)
 	else:
 		print "COMMAND SEND ERROR"
 
 	light = []
 	temper = []
 	humid = []
-	t_inve = inve
+	t_inve = g.inve
 	totalnum = 2
 #	cursor.execute("SELECT ID FROM cur_person order by ID DESC limit 1")
 #	totalnum = int(cursor.fetchone()[1])
