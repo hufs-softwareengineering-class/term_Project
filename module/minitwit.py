@@ -14,6 +14,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 #pipe
 pipe_name = 'pipefile'
 pipe_name2 = 'pipefile2'
+inve = 0 #침입감지
 if not os.path.exists(pipe_name):
 	os.mkfifo(pipe_name)
 
@@ -219,7 +220,7 @@ def Manual():
 	
 	error = None
 	return render_template('Manual.html', error=error, light=light, \
-			temper=temper, humid=humid, totalnum=totalnum)
+			temper=temper, humid=humid, totalnum=totalnum, inve=inve)
 
 
 #LED ON/OFF 버튼 누를때 실행되는 부분
@@ -257,6 +258,14 @@ def action(cmd, num, act):
         	print message + "before wirte pipe=============="
 		os.write(pipout, message)
 		print message + "after wirte pipe============"
+	elif cmd == 'inve':
+		if act == "on":
+			inve = 1
+		else:
+			inve = 0
+		os.write(pipout2, inve)
+	else:
+		print "COMMAND SEND ERROR"
 
 	light = []
 	temper = []
@@ -289,7 +298,7 @@ def action(cmd, num, act):
 	
 	error = None
 	return render_template('Manual.html', error=error, light=light, \
-			temper=temper, humid=humid, totalnum=totalnum)
+			temper=temper, humid=humid, totalnum=totalnum, inve=inve)
 
 def login():
     """Logs the user in."""
