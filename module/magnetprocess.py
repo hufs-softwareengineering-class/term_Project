@@ -13,6 +13,10 @@ def magnetSensing(que, total_num, conn):
   pipe_name = "pipefile2"
   line = ""
   cursor = conn.cursor()
+  webpipeque = Queue()
+  webpipe = Process(target = pipeprocess, args = (webpipeque, ))
+  webpipe.start()
+  
  
   if not os.path.exists(pipe_name):
     os.mkfifo(pipe_name)
@@ -23,11 +27,12 @@ def magnetSensing(que, total_num, conn):
   
   while 1:
     try:
-      line = pipein.get_nowait() #readline()[:-1]
+      line = pipein.readline()[:-1]
     except:
       pass
     if line != "":
-      pass
+      print line + "from web"
+
       # need to parse
       # setting prevention_Mode
     magnet_state = GPIOmagnetRead()

@@ -1,7 +1,10 @@
 import os, time, sys
 
 def pipeprocess(ipcque):
-  pipe_name = 'pipefile'
+  if len(sys.argv) < 2:
+    return
+
+  pipe_name = sys.argv[1]
   if not os.path.exists(pipe_name):
     os.mkfifo(pipe_name)
 
